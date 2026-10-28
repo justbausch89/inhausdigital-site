@@ -2,6 +2,8 @@
 {
   "name": "inhausdigital-site",
   "compatibility_date": "2026-10-01",
+  // keep the free *.workers.dev address on, for previewing before the domain switch
+  "workers_dev": true,
   "assets": {
     "directory": "./public",
     "not_found_handling": "404-page"
