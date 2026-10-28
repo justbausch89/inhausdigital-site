@@ -6,8 +6,8 @@ The new site for https://www.inhausdigital.com.au, replacing the Squarespace sit
 
 - [x] Homepage, Services, About, Media and Contact pages
 - [x] 404 page, sitemap, robots.txt, redirects for old Squarespace URLs
-- [ ] Contact form connected (needs a Web3Forms access key, see below)
-- [ ] Hosting connected (Cloudflare Pages, see below)
+- [x] Contact form connected to Web3Forms
+- [ ] Hosting connected (Cloudflare, see below)
 - [ ] Domain switched from Squarespace
 
 The live site is still the Squarespace one until the domain is switched.
@@ -25,24 +25,20 @@ The live site is still the Squarespace one until the domain is switched.
 
 Shared styles are in `public/assets/css/site.css` (colours and fonts at the top) and behaviour in `public/assets/js/site.js`: mobile menu, scroll fades, click-to-play videos and the contact form.
 
-## Hosting: Cloudflare Pages
+## Hosting: Cloudflare
 
-1. In the Cloudflare dashboard: **Workers & Pages → Create application → Pages → Connect to Git**.
-2. Choose GitHub and this repository.
-3. Build settings:
-   - **Production branch:** `main`
-   - **Framework preset:** None
-   - **Build command:** `exit 0`
-   - **Build output directory:** `public`
-4. **Save and Deploy.**
+The site deploys as a Cloudflare Worker that serves the files in `public/`. [`wrangler.jsonc`](wrangler.jsonc) holds the settings; there is no Worker script and no build step.
 
-Every push then redeploys automatically. Branches other than `main` get their own preview address, `<branch-name>.<project>.pages.dev`.
+1. In the Cloudflare dashboard: **Workers & Pages → Create application**, then connect GitHub and choose this repository.
+2. **Project name:** `inhausdigital-site` (it must match `name` in `wrangler.jsonc`).
+3. **Build command:** leave empty. **Deploy command:** `npx wrangler deploy`.
+4. **Deploy.**
 
-`public/_redirects` sends old Squarespace URLs (`/page`, `/cart`) to the homepage.
+Every push to `main` then redeploys automatically. Cloudflare serves `/about` from `about.html`, uses `404.html` for missing pages, and `public/_redirects` sends old Squarespace URLs (`/page`, `/cart`) to the homepage.
 
 ## Contact form: Web3Forms
 
-The forms on the homepage and contact page post to [Web3Forms](https://web3forms.com), which emails each enquiry. To connect them, create an access key on web3forms.com with the inbox that should receive enquiries. Then replace `ADD-WEB3FORMS-ACCESS-KEY` in `public/index.html` and `public/contact.html`. The key is meant to be public, so it's fine in the page source. Until then, submitting shows "Preview only".
+The forms on the homepage and contact page post to [Web3Forms](https://web3forms.com), which emails each enquiry to the inbox set on the form in the Web3Forms dashboard. The access key is in the hidden `access_key` field in `public/index.html` and `public/contact.html`; it's meant to be public, so it's fine in the page source. Sending a copy to a second address (CC) is a Web3Forms Pro feature.
 
 ## Videos
 
