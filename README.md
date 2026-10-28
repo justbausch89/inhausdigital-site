@@ -76,5 +76,4 @@ Taken from the InHaus brand deck.
 ## To check before going live
 
 - **Felisha's bio** on the About page could use a line about her background.
-- **Power Retail PowerUP** talk has a shape panel instead of a photo until a photo file is added.
 - **Client logos** are small images from the old site. Sharper SVG versions would look better on high-resolution screens.

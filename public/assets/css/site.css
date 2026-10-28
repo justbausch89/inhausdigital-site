@@ -584,6 +584,9 @@ h1, h2, h3, h4 {
 .page-hero__media { position: relative; max-width: 460px; width: 100%; justify-self: end; }
 .page-hero__media .tint { aspect-ratio: 1; border-radius: 50%; }
 .page-hero__media .shape { position: absolute; width: 30%; height: auto; aspect-ratio: 1; }
+/* designed artwork (like a podcast cover) shows untinted in a Bauhaus arch */
+.page-hero__media--cover { max-width: 400px; }
+.page-hero__media--cover > img { position: relative; z-index: 1; width: 100%; border-radius: 999px 999px 0 0; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35); }
 @media (prefers-reduced-motion: no-preference) {
   .page-hero__shapes > * { animation: pop-in 0.9s cubic-bezier(.2, .8, .2, 1) backwards; }
   .page-hero__shapes > :nth-child(2) { animation-delay: 0.1s; }
@@ -882,6 +885,10 @@ h1, h2, h3, h4 {
 /* ---------- Talks (asterisk timeline from the deck) ---------- */
 
 .talks__head { margin-bottom: clamp(48px, 6vw, 72px); }
+.talks__head--photo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+.talks__head--photo .lead { max-width: 480px; margin-top: 20px; }
+.talks__head--photo .tint { aspect-ratio: 3 / 2; border-radius: 0 999px 999px 0; margin: 0; }
+@media (max-width: 860px) { .talks__head--photo { grid-template-columns: 1fr; } }
 .timeline { position: relative; display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 40px; }
 .talks .timeline { --cols: 4; gap: 32px; }
 .talks .btn-row { margin-top: clamp(40px, 5vw, 64px); }
