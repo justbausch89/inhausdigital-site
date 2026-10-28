@@ -237,8 +237,54 @@ h1, h2, h3, h4 {
   transition: transform 0.25s ease;
 }
 .site-nav a:not(.btn):hover::after,
-.site-nav a[aria-current="page"]::after { transform: scaleX(1); }
+.site-nav a[aria-current]::after { transform: scaleX(1); }
 .site-nav .btn { min-height: 44px; padding: 10px 22px; font-size: 13px; }
+
+/* Workshops drop-down: opens on hover, or with the arrow button for keyboards and touch screens */
+.has-sub { position: relative; display: flex; align-items: center; gap: 2px; }
+.sub-toggle {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+.sub-toggle svg { width: 11px; height: 8px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.2s ease; }
+.site-nav .site-nav__sub {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: -18px;
+  display: block;
+  min-width: 230px;
+  padding: 10px;
+  border-radius: 0 24px 24px 24px;
+  background: var(--charcoal-deep);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(245, 243, 241, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+}
+/* Bridges the gap so the menu stays open while the pointer moves down to it */
+.site-nav__sub::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 16px; }
+.has-sub:hover .site-nav__sub,
+.sub-toggle[aria-expanded="true"] + .site-nav__sub { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.has-sub:hover .sub-toggle svg,
+.sub-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.site-nav__sub a:not(.btn) { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 12px; letter-spacing: 0.02em; }
+.site-nav__sub a:not(.btn)::after { display: none; }
+.site-nav__sub a::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--yellow); }
+.site-nav__sub .sub--pink::before { background: var(--pink); }
+.site-nav__sub .sub--green::before { background: var(--green); }
+.site-nav__sub .sub--orange::before { background: var(--orange); }
+.site-nav__sub a:hover { background: rgba(245, 243, 241, 0.08); }
+.site-nav__sub a[aria-current] { color: var(--yellow); }
+.site-nav__sub li:last-child { margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(245, 243, 241, 0.1); }
 
 .nav-toggle {
   display: none;
@@ -281,6 +327,25 @@ h1, h2, h3, h4 {
   .site-nav a:not(.btn) { font-family: var(--display); font-size: clamp(26px, 7vw, 34px); letter-spacing: 0; font-weight: 400; }
   .site-nav ul { gap: 16px; }
   .site-nav .btn { margin-top: 8px; }
+  /* In the phone menu the long list can scroll, and the workshops sit under Workshops */
+  .site-nav { max-height: calc(100dvh - var(--header-h)); overflow-y: auto; }
+  .has-sub { display: block; }
+  .sub-toggle, .site-nav__sub::before { display: none; }
+  .site-nav .site-nav__sub {
+    position: static;
+    min-width: 0;
+    margin-top: 10px;
+    padding: 0 0 0 4px;
+    background: none;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+  .site-nav .site-nav__sub a:not(.btn) { padding: 7px 0; font-family: var(--body); font-size: 17px; font-weight: 700; }
+  .site-nav__sub a:hover { background: none; }
+  .site-nav__sub li:last-child { margin-top: 0; padding-top: 0; border-top: 0; }
 }
 
 /* ---------- Bauhaus shapes ---------- */

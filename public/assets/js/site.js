@@ -22,6 +22,29 @@
     });
   }
 
+  // Workshops drop-down: hovering opens it (CSS); the arrow button opens it for keyboards and
+  // touch screens. It closes when focus or a click moves elsewhere, or on Escape.
+  document.querySelectorAll('.sub-toggle').forEach(function (button) {
+    var item = button.parentNode;
+    function setOpen(open) { button.setAttribute('aria-expanded', String(open)); }
+    button.addEventListener('click', function () {
+      setOpen(button.getAttribute('aria-expanded') !== 'true');
+    });
+    item.addEventListener('focusout', function (e) {
+      if (!item.contains(e.relatedTarget)) setOpen(false);
+    });
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
+        e.stopPropagation();
+        setOpen(false);
+        button.focus();
+      }
+    });
+    document.addEventListener('click', function (e) {
+      if (!item.contains(e.target)) setOpen(false);
+    });
+  });
+
   // Header background once the page scrolls
   var header = document.querySelector('.site-header');
   if (header) {

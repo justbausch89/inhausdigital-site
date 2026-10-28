@@ -50,7 +50,16 @@
         <ul>
           <li><a href="/services">Services</a></li>
           <li><a href="/about">About</a></li>
-          <li><a href="/workshops">Workshops</a></li>
+          <li class="has-sub">
+            <a href="/workshops">Workshops</a>
+            <button class="sub-toggle" type="button" aria-expanded="false" aria-controls="workshops-menu" aria-label="Workshops menu"><svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5"/></svg></button>
+            <ul id="workshops-menu" class="site-nav__sub">
+              <li><a class="sub--pink" href="/workshops/meta-ads">Meta Ads</a></li>
+              <li><a class="sub--green" href="/workshops/google-ads">Google Ads</a></li>
+              <li><a class="sub--orange" href="/workshops/crm-email">CRM &amp; Email</a></li>
+              <li><a class="sub--all" href="/workshops">All workshops</a></li>
+            </ul>
+          </li>
           <li><a href="/inhaus-app" aria-current="page">InHaus App</a></li>
           <li><a href="/media">Media</a></li>
           <li><a href="/contact">Contact</a></li>
