@@ -701,6 +701,7 @@ h1, h2, h3, h4 {
 .shorts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 2vw, 24px); }
 .video--short { aspect-ratio: 9 / 16; --video-radius: 24px; }
 .video--short .video__play { width: 64px; height: 64px; }
+.shorts h3 { margin-top: 16px; font-size: clamp(17px, 1.6vw, 22px); line-height: 1.15; }
 @media (max-width: 760px) { .shorts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 .press { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
