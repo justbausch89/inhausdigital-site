@@ -99,6 +99,50 @@
     window.addEventListener('resize', onScroll);
   }
 
+  // App walkthrough: steps through its scenes like a short video while it's on screen.
+  // Visitors can pause it or jump to a step; with reduced motion it only moves when asked.
+  document.querySelectorAll('[data-tour]').forEach(function (tour) {
+    var scenes = tour.querySelectorAll('.tour__scene');
+    var buttons = tour.querySelectorAll('[data-goto]');
+    var playBtn = tour.querySelector('.tour__play');
+    var DURATION = 5500;
+    var current = 0, timer = null, playing = !reduceMotion, onScreen = false;
+    tour.style.setProperty('--tour-duration', DURATION + 'ms');
+    function show(i) {
+      current = (i + scenes.length) % scenes.length;
+      scenes.forEach(function (s, k) {
+        s.classList.toggle('is-active', k === current);
+        s.setAttribute('aria-hidden', String(k !== current));
+      });
+      buttons.forEach(function (b, k) {
+        b.classList.remove('is-active');
+        void b.offsetWidth; // restart the progress bar
+        b.classList.toggle('is-active', k === current);
+        b.setAttribute('aria-pressed', String(k === current));
+      });
+      schedule();
+    }
+    function schedule() {
+      clearTimeout(timer);
+      tour.classList.toggle('is-playing', playing && onScreen);
+      if (playing && onScreen) timer = setTimeout(function () { show(current + 1); }, DURATION);
+    }
+    buttons.forEach(function (b, k) { b.addEventListener('click', function () { show(k); }); });
+    if (playBtn) playBtn.addEventListener('click', function () {
+      playing = !playing;
+      playBtn.setAttribute('aria-label', playing ? 'Pause walkthrough' : 'Play walkthrough');
+      show(current);
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        var visible = entries[0].isIntersecting;
+        if (visible !== onScreen) { onScreen = visible; schedule(); }
+      }, { threshold: 0.35 }).observe(tour);
+    }
+    if (playBtn) playBtn.setAttribute('aria-label', playing ? 'Pause walkthrough' : 'Play walkthrough');
+    show(0);
+  });
+
   // Current year in the footer
   document.querySelectorAll('[data-year]').forEach(function (el) {
     el.textContent = new Date().getFullYear();

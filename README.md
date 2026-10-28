@@ -21,9 +21,18 @@ The live site is still the Squarespace one until the domain is switched.
 | About | `public/about.html` |
 | Media | `public/media.html` |
 | Contact | `public/contact.html` |
+| Workshops | `public/workshops.html` |
+| Meta Ads workshop | `public/workshops/meta-ads.html` |
+| Google Ads workshop | `public/workshops/google-ads.html` |
+| CRM & Email workshop | `public/workshops/crm-email.html` |
+| InHaus App | `public/inhaus-app.html` |
 | Not found | `public/404.html` |
 
 Shared styles are in `public/assets/css/site.css` (colours and fonts at the top) and behaviour in `public/assets/js/site.js`: mobile menu, scroll fades, click-to-play videos and the contact form.
+
+## Workshop landing pages
+
+The three workshop pages share most of their sections (agency pain points, what's included, the platform, the team, the booking form). The booking forms post to Web3Forms like the contact form, with the workshop pre-ticked and a hidden `page` field so enquiries say where they came from. The app walkthrough ("Watch how it works") is HTML and CSS animation driven by `site.js` (`[data-tour]`); it can be swapped for a real video later.
 
 ## Hosting: Cloudflare
 
