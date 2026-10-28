@@ -75,7 +75,6 @@ Taken from the InHaus brand deck.
 
 ## To check before going live
 
-- **Revenue figure:** the site says Style My Wall is on track for $6–8M in year two. The press clipping on the homepage and Media page says $8–10M.
 - **Felisha's bio** on the About page could use a line about her background.
 - **Power Retail PowerUP** talk has a shape panel instead of a photo until a photo file is added.
 - **Client logos** are small images from the old site. Sharper SVG versions would look better on high-resolution screens.

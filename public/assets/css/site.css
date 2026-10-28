@@ -479,7 +479,7 @@ h1, h2, h3, h4 {
 }
 .growth__label { font-size: 13px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: var(--yellow); }
 
-/* Bars are to scale: year one is $1M of an $8M axis; year two is solid to $6M and striped to $8M */
+/* Bars are to scale: year one is $1M of a $10M axis; year two is solid to $8M and striped to $10M */
 .chart {
   --bar-max: clamp(200px, 24vw, 340px);
   display: grid;
@@ -489,14 +489,15 @@ h1, h2, h3, h4 {
   margin-top: auto;
   padding-top: 40px;
 }
-.chart__col { display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; }
-.chart__value { font-family: var(--display); font-size: clamp(48px, 6.6vw, 112px); line-height: 0.9; margin-bottom: 18px; white-space: nowrap; }
+.chart__col { display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; container-type: inline-size; }
+/* sized to the column so "$8–10M" always fits; the first value is a fallback for older browsers */
+.chart__value { font-family: var(--display); font-size: clamp(36px, 5vw, 92px); font-size: min(29cqi, 112px); line-height: 0.9; margin-bottom: 18px; white-space: nowrap; }
 .chart__bar { display: block; border-radius: 999px 999px 0 0; transform-origin: bottom; }
-.chart__bar--y1 { height: calc(var(--bar-max) / 8); background: var(--pink); }
+.chart__bar--y1 { height: calc(var(--bar-max) / 10); background: var(--pink); }
 .chart__bar--y2 {
   height: var(--bar-max);
   background:
-    linear-gradient(to top, var(--green) 75%, transparent 75%),
+    linear-gradient(to top, var(--green) 80%, transparent 80%),
     repeating-linear-gradient(-45deg, rgba(134, 201, 143, 0.6) 0 10px, rgba(134, 201, 143, 0.2) 10px 20px);
 }
 .chart__label { display: block; margin-top: 16px; padding-top: 14px; border-top: 2px solid rgba(245, 243, 241, 0.2); font-size: 15px; font-weight: 700; }
