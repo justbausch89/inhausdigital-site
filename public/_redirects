@@ -1,0 +1,3 @@
+# Cloudflare Pages redirects. Old Squarespace URLs that no longer exist.
+/page  /  301
+/cart  /  301
