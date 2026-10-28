@@ -635,7 +635,7 @@ h1, h2, h3, h4 {
   .press-logos img { max-height: 48px; }
 }
 
-/* ---------- Video (thumbnail first; the YouTube player loads on click) ---------- */
+/* ---------- Video (thumbnail first; the player loads on click) ---------- */
 
 .video {
   position: relative;
@@ -663,7 +663,7 @@ h1, h2, h3, h4 {
 }
 .video:hover .video__play { transform: scale(1.08); }
 .video__play svg { width: 38%; height: 38%; margin-left: 6%; }
-.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video iframe, .video video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
 .feature-video {
   display: grid;
@@ -960,6 +960,13 @@ h1, h2, h3, h4 {
 .features--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 40px; }
 .pains--six { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .tour-wrap { margin-top: clamp(64px, 8vw, 104px); }
+.app-video { max-width: 1120px; margin: 0; }
+.app-video__media { position: relative; }
+.app-video .video { --video-radius: 0 clamp(40px, 6vw, 96px) 0 0; z-index: 1; box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35); }
+.app-video__shape { position: absolute; right: -28px; bottom: -28px; width: 120px; height: 120px; }
+.app-video figcaption { margin-top: 18px; font-size: 14px; font-weight: 700; opacity: 0.8; }
+.tour-head { margin-top: clamp(64px, 8vw, 104px); }
+@media (max-width: 960px) { .app-video__shape { width: 72px; height: 72px; right: -12px; bottom: -12px; } }
 @media (max-width: 960px) { .features--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 860px) { .pains--six { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .features--3 { grid-template-columns: 1fr; } }

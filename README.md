@@ -32,7 +32,7 @@ Shared styles are in `public/assets/css/site.css` (colours and fonts at the top)
 
 ## Workshop landing pages
 
-The three workshop pages share most of their sections (agency pain points, what's included, the platform, the team, the booking form). The booking forms post to Web3Forms like the contact form, with the workshop pre-ticked and a hidden `page` field so enquiries say where they came from. The app walkthrough ("Watch how it works") is HTML and CSS animation driven by `site.js` (`[data-tour]`); it can be swapped for a real video later.
+The three workshop pages share most of their sections (agency pain points, what's included, the platform, the team, the booking form). The booking forms post to Web3Forms like the contact form, with the workshop pre-ticked and a hidden `page` field so enquiries say where they came from. The platform section on each workshop page plays the 80-second InHaus App video (see below). The InHaus App page shows the same video, followed by a step-by-step walkthrough that is HTML and CSS animation driven by `site.js` (`[data-tour]`).
 
 ## Hosting: Cloudflare
 
@@ -52,6 +52,34 @@ The forms on the homepage and contact page post to [Web3Forms](https://web3forms
 ## Videos
 
 YouTube videos show a thumbnail first and load the player only when clicked, which keeps pages fast. To add one, copy an existing `<a class="video" … data-video="VIDEO_ID">` block and change the ID; add `data-start="seconds"` to start part-way through. Shorts use `video video--short` and the `oar2.jpg` thumbnail.
+
+Our own MP4s use the same block with `data-mp4` instead of `data-video`, and `href` pointing at the file; they play in the browser's own player. Keep each file under 25 MB, Cloudflare's limit for a single file.
+
+## The InHaus App video
+
+The promo video (`public/assets/video/inhaus-app.mp4`, with `inhaus-app-poster.webp` as its thumbnail) is made with [Remotion](https://www.remotion.dev), which builds video from code. Its source is in [`video/`](video), separate from the website, and isn't deployed. All the figures in it are sample data.
+
+- Scene order and timing: `video/src/Video.tsx` (30 frames = 1 second)
+- Each scene, with its words and sample numbers: `video/src/scenes/`
+- Colours and fonts: `video/src/theme.ts`
+
+To change it, edit those files and render again (needs Node.js and ffmpeg):
+
+```bash
+cd video && npm install
+```
+
+```bash
+npm run studio
+```
+
+That opens a live preview in the browser. When it looks right:
+
+```bash
+npm run render && npm run web && npm run poster
+```
+
+`render` makes a high-quality master in `video/out/`; `web` compresses it into the site (about 11 MB); `poster` updates the thumbnail. Remotion is free for individuals and companies of up to three people; bigger companies need a [company licence](https://www.remotion.dev/license).
 
 ## Preview locally
 

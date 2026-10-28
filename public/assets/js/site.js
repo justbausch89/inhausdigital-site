@@ -44,24 +44,35 @@
     reveals.forEach(function (el) { el.classList.add('is-visible'); });
   }
 
-  // Videos show a thumbnail first and only load YouTube's player when clicked,
-  // which keeps pages fast. Without JavaScript the thumbnail links to YouTube.
-  document.querySelectorAll('a[data-video]').forEach(function (link) {
+  // Videos show a thumbnail first and only load the player when clicked, which keeps
+  // pages fast. YouTube links (data-video) become YouTube's player; our own MP4s
+  // (data-mp4) play in the browser. Without JavaScript the thumbnail is a plain link.
+  document.querySelectorAll('a[data-video], a[data-mp4]').forEach(function (link) {
     link.addEventListener('click', function (e) {
       e.preventDefault();
-      var start = link.getAttribute('data-start');
-      var iframe = document.createElement('iframe');
-      iframe.src = 'https://www.youtube-nocookie.com/embed/' + link.getAttribute('data-video') +
-        '?autoplay=1&rel=0&playsinline=1' + (start ? '&start=' + start : '');
-      iframe.title = link.getAttribute('data-title') || 'YouTube video';
-      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-      iframe.allowFullscreen = true;
+      var player;
+      if (link.hasAttribute('data-mp4')) {
+        player = document.createElement('video');
+        player.src = link.getAttribute('href');
+        player.controls = true;
+        player.autoplay = true;
+        player.playsInline = true;
+        player.setAttribute('aria-label', link.getAttribute('data-title') || 'Video');
+      } else {
+        var start = link.getAttribute('data-start');
+        player = document.createElement('iframe');
+        player.src = 'https://www.youtube-nocookie.com/embed/' + link.getAttribute('data-video') +
+          '?autoplay=1&rel=0&playsinline=1' + (start ? '&start=' + start : '');
+        player.title = link.getAttribute('data-title') || 'YouTube video';
+        player.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        player.referrerPolicy = 'strict-origin-when-cross-origin';
+        player.allowFullscreen = true;
+      }
       var frame = document.createElement('div');
       frame.className = link.className;
-      frame.appendChild(iframe);
+      frame.appendChild(player);
       link.replaceWith(frame);
-      iframe.focus();
+      player.focus();
     });
   });
 
