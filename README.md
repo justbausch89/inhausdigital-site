@@ -36,7 +36,7 @@ The three workshop pages share most of their sections (agency pain points, what'
 
 ## Hosting: Cloudflare
 
-The site deploys as a Cloudflare Worker that serves the files in `public/`. [`wrangler.jsonc`](wrangler.jsonc) holds the settings; there is no Worker script and no build step.
+The site deploys as a Cloudflare Worker that serves the files in `public/`. [`wrangler.jsonc`](wrangler.jsonc) holds the settings; there is no build step. A small Worker script, [`worker/video-ranges.js`](worker/video-ranges.js), handles `/assets/video/*` only: it lets browsers fetch videos in pieces, which Safari and iPhones need before they'll play one. Everything else is served straight from `public/`.
 
 1. In the Cloudflare dashboard: **Workers & Pages → Create application**, then connect GitHub and choose this repository.
 2. **Project name:** `inhausdigital-site` (it must match `name` in `wrangler.jsonc`).

@@ -1,11 +1,15 @@
-// Cloudflare deploy settings: publish the static site in ./public (no Worker script).
+// Cloudflare deploy settings: publish the static site in ./public. The small Worker script
+// only handles /assets/video/*, so videos can be streamed in pieces (needed for Safari).
 {
   "name": "inhausdigital-site",
+  "main": "worker/video-ranges.js",
   "compatibility_date": "2026-10-01",
   // keep the free *.workers.dev address on, for previewing before the domain switch
   "workers_dev": true,
   "assets": {
     "directory": "./public",
-    "not_found_handling": "404-page"
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/assets/video/*"]
   }
 }
