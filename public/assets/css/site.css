@@ -353,15 +353,17 @@ h1, h2, h3, h4 {
   .bauhaus__photo:hover img { transform: scale(1.04); }
 }
 
+/* Each shape pops in, then keeps moving on its own rhythm. The pop-in animates `transform`;
+   the idle loops animate the separate `rotate` / `scale` properties so they don't fight it,
+   and "backwards" lets the hover rotation work once the pop-in ends. */
 @media (prefers-reduced-motion: no-preference) {
-  /* "backwards" so the hover rotation still works once the intro animation ends */
   .bauhaus > * { animation: pop-in 0.9s cubic-bezier(.2, .8, .2, 1) backwards; }
-  .bauhaus > :nth-child(2) { animation-delay: 0.08s; }
-  .bauhaus > :nth-child(3) { animation-delay: 0.16s; }
+  .bauhaus > :nth-child(1) { animation: pop-in 0.9s cubic-bezier(.2, .8, .2, 1) backwards, flip-half 12s cubic-bezier(.65, 0, .35, 1) 2s infinite; }
+  .bauhaus > :nth-child(2) { animation: pop-in 0.9s cubic-bezier(.2, .8, .2, 1) 0.08s backwards, turn 9s cubic-bezier(.65, 0, .35, 1) 3.5s infinite; }
+  .bauhaus > :nth-child(3) { animation: pop-in 0.9s cubic-bezier(.2, .8, .2, 1) 0.16s backwards, breathe 6s ease-in-out 1.5s infinite; }
   .bauhaus > :nth-child(4) { animation-delay: 0.24s; }
-  .bauhaus > :nth-child(5) { animation-delay: 0.32s; }
-  .bauhaus > :nth-child(6) { animation-delay: 0.4s; }
-  .bauhaus .dot { animation-name: pop-in-dot; }
+  .bauhaus > :nth-child(5) { animation: pop-in 0.9s cubic-bezier(.2, .8, .2, 1) 0.32s backwards, turn-back 10s cubic-bezier(.65, 0, .35, 1) 6s infinite; }
+  .bauhaus > :nth-child(6) { animation: pop-in-dot 0.9s cubic-bezier(.2, .8, .2, 1) 0.4s backwards, pulse 4.5s ease-in-out 1s infinite; }
 }
 @keyframes pop-in {
   from { opacity: 0; transform: scale(0.6) rotate(-90deg); }
@@ -371,6 +373,43 @@ h1, h2, h3, h4 {
   from { opacity: 0; transform: scale(0.1); }
   to { opacity: 1; transform: scale(0.56); }
 }
+/* hold, quarter-turn, hold, turn back */
+@keyframes turn { 0%, 40% { rotate: 0deg; } 50%, 90% { rotate: 90deg; } 100% { rotate: 0deg; } }
+@keyframes turn-back { 0%, 40% { rotate: 0deg; } 50%, 90% { rotate: -90deg; } 100% { rotate: 0deg; } }
+@keyframes flip-half { 0%, 42% { rotate: 0deg; } 50%, 92% { rotate: 180deg; } 100% { rotate: 360deg; } }
+@keyframes breathe { 0%, 100% { scale: 1; } 50% { scale: 0.86; } }
+@keyframes pulse { 0%, 100% { scale: 1; } 50% { scale: 1.4; } }
+
+/* Scroll drift: site.js sets --drift (in px, with a little spring) on each [data-drift] group as it
+   passes through the screen, and each shape moves by its own factor of it. --amp tones it down for small groups. */
+[data-drift] > .shape {
+  translate:
+    calc(var(--dx, 0) * var(--drift, 0) * var(--amp, 1) * 1px)
+    calc(var(--dy, 0) * var(--drift, 0) * var(--amp, 1) * 1px);
+}
+[data-drift] > .shape:nth-child(3n + 1) { --dx: 0.06; --dy: -0.14; }
+[data-drift] > .shape:nth-child(3n + 2) { --dx: -0.1; --dy: 0.08; }
+[data-drift] > .shape:nth-child(3n) { --dx: 0.12; --dy: 0.16; }
+/* hero: give every shape its own direction (child 4 is the photo, which stays put) */
+.bauhaus > .shape:nth-child(5) { --dx: 0.14; --dy: -0.06; }
+.bauhaus > .shape:nth-child(6) { --dx: -0.16; --dy: -0.12; }
+.intro__figure, .duo__figure, .feature-video__media, .page-hero__media { --amp: 0.6; }
+.contact__shapes, .cta-band__shapes { --amp: 0.4; }
+.shape-strip { --amp: 0.25; }
+
+/* Service icons ("Let us in on…") idle motion */
+@media (prefers-reduced-motion: no-preference) {
+  .service__icon > * { transform-box: fill-box; transform-origin: center; }
+  .service--pink .service__icon path { transform-origin: 0% 100%; animation: breathe 5s ease-in-out infinite; }
+  .service--pink .service__icon circle { animation: bob 3.2s ease-in-out infinite; }
+  .service--green .service__icon circle { animation: pulse-soft 4s ease-in-out 0.6s infinite; }
+  .service--green .service__icon path { animation: slide 5s ease-in-out infinite; }
+  .service--orange .service__icon path { transform-origin: 0% 50%; animation: breathe 5.5s ease-in-out 1s infinite; }
+  .service--orange .service__icon rect { animation: turn 6s cubic-bezier(.65, 0, .35, 1) 0.5s infinite; }
+}
+@keyframes bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 6px; } }
+@keyframes slide { 0%, 100% { translate: 0 0; } 50% { translate: -5px 0; } }
+@keyframes pulse-soft { 0%, 100% { scale: 1; } 50% { scale: 0.88; } }
 
 @media (max-width: 860px) {
   .hero__grid { grid-template-columns: 1fr; }

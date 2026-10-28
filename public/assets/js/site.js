@@ -65,6 +65,40 @@
     });
   });
 
+  // Bauhaus shapes drift as the page scrolls. Each [data-drift] group gets a --drift value
+  // (its distance from the middle of the screen, in px) that follows the scroll on a soft
+  // spring, so the shapes overshoot a little and settle. The CSS turns it into movement.
+  var driftGroups = [].slice.call(document.querySelectorAll('[data-drift]'));
+  if (driftGroups.length && !reduceMotion) {
+    var groups = driftGroups.map(function (el) { return { el: el, pos: 0, vel: 0, target: 0 }; });
+    var running = false;
+    var measure = function () {
+      var middle = window.innerHeight / 2;
+      groups.forEach(function (g) {
+        var r = g.el.getBoundingClientRect();
+        g.target = Math.max(-420, Math.min(420, r.top + r.height / 2 - middle));
+      });
+    };
+    var step = function () {
+      var moving = false;
+      groups.forEach(function (g) {
+        g.vel = (g.vel + (g.target - g.pos) * 0.05) * 0.82;
+        g.pos += g.vel;
+        if (Math.abs(g.vel) > 0.05 || Math.abs(g.target - g.pos) > 0.5) moving = true;
+        g.el.style.setProperty('--drift', g.pos.toFixed(1));
+      });
+      if (moving) requestAnimationFrame(step); else running = false;
+    };
+    var onScroll = function () {
+      measure();
+      if (!running) { running = true; requestAnimationFrame(step); }
+    };
+    measure();
+    groups.forEach(function (g) { g.pos = g.target; g.el.style.setProperty('--drift', g.pos.toFixed(1)); });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  }
+
   // Current year in the footer
   document.querySelectorAll('[data-year]').forEach(function (el) {
     el.textContent = new Date().getFullYear();
