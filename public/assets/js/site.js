@@ -84,7 +84,11 @@
         status.textContent = 'Preview only: this form isn’t connected yet.';
         return;
       }
-      var data = Object.fromEntries(new FormData(form));
+      // Join repeated fields (tick boxes) into one line, e.g. "Meta ads, Google ads"
+      var data = {};
+      new FormData(form).forEach(function (value, key) {
+        data[key] = key in data ? data[key] + ', ' + value : value;
+      });
       if (data.botcheck) return;
       button.disabled = true;
       status.textContent = 'Sending…';

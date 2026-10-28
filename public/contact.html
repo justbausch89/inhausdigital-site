@@ -90,23 +90,34 @@
             <input id="email" name="email" type="email" autocomplete="email" required>
           </div>
           <div class="field">
+            <label for="phone">Contact number</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required>
+          </div>
+          <div class="field">
             <label for="company">Company</label>
             <input id="company" name="company" type="text" autocomplete="organization">
           </div>
-          <div class="field field--full">
-            <label for="interest">I’m interested in</label>
-            <select id="interest" name="interest">
+          <div class="field">
+            <label for="heard">How did you hear about us?</label>
+            <select id="heard" name="heard_about_us">
               <option value="">Select an option</option>
-              <option>Email marketing &amp; automation</option>
-              <option>Social media &amp; content</option>
-              <option>Paid ads</option>
-              <option>Photography &amp; videography</option>
-              <option>Brand scaling</option>
-              <option>1:1 team training</option>
-              <option>Speaking or interviews</option>
-              <option>Not sure yet</option>
+              <option>Instagram</option>
+              <option>LinkedIn</option>
+              <option>Google search</option>
+              <option>Podcast or interview</option>
+              <option>Event or talk</option>
+              <option>Referral or word of mouth</option>
+              <option>Other</option>
             </select>
           </div>
+          <fieldset class="field field--full">
+            <legend>I’m interested in <span class="field__hint">(tick all that apply)</span></legend>
+            <div class="choices">
+              <label class="choice"><input type="checkbox" name="interested_in" value="Email marketing &amp; automation">Email marketing &amp; automation</label>
+              <label class="choice"><input type="checkbox" name="interested_in" value="Meta ads">Meta ads</label>
+              <label class="choice"><input type="checkbox" name="interested_in" value="Google ads">Google ads</label>
+            </div>
+          </fieldset>
           <div class="field field--full">
             <label for="message">Message</label>
             <textarea id="message" name="message" required></textarea>
