@@ -15,7 +15,10 @@ export const Hook: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 	const lines = ['Struggling to', 'understand your', 'numbers?'];
-	const lift = pop(frame, fps, 78, 20);
+	const lift = pop(frame, fps, 56, 20);
+	// each card lands as the voiceover names it
+	const CARD_AT = [70, 114, 140];
+	const SYMBOL_AT = [100, 152];
 	let w = 0;
 	return (
 		<AbsoluteFill style={{background: `radial-gradient(circle at 50% 40%, ${brand.charcoal}, ${brand.deep})`}}>
@@ -63,12 +66,12 @@ export const Hook: React.FC = () => {
 
 			<div style={{position: 'absolute', top: 395, left: 0, right: 0, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 				{CARDS.map((card, i) => {
-					const delay = 96 + i * 12;
+					const delay = CARD_AT[i];
 					const s = pop(frame, fps, delay, 12);
 					const settled = progress(frame, delay + 10, 20);
 					const wobble = Math.sin(frame * 0.16 + i * 2) * 1.6 * settled;
 					const symbol = i === 0 ? '+' : i === 1 ? '≠' : null;
-					const symIn = pop(frame, fps, 140 + i * 10, 10);
+					const symIn = pop(frame, fps, SYMBOL_AT[i] ?? 0, 10);
 					return (
 						<React.Fragment key={card.who}>
 							<div
@@ -121,8 +124,8 @@ export const Hook: React.FC = () => {
 					fontSize: 44,
 					fontWeight: 600,
 					color: '#fff',
-					opacity: progress(frame, 172, 18),
-					transform: `translateY(${interpolate(progress(frame, 172, 18), [0, 1], [30, 0])}px)`,
+					opacity: progress(frame, 158, 18),
+					transform: `translateY(${interpolate(progress(frame, 158, 18), [0, 1], [30, 0])}px)`,
 				}}
 			>
 				Every platform takes credit for the <span style={{color: brand.yellow}}>same sale.</span>

@@ -11,7 +11,7 @@ export const Cta: React.FC = () => {
 	const name = pop(frame, fps, 14, 14);
 	const line = progress(frame, 30, 20);
 	const button = pop(frame, fps, 50, 12);
-	const url = progress(frame, 64, 20);
+	const url = progress(frame, 120, 20);
 	const pulse = frame > 80 ? Math.max(0, Math.sin((frame - 80) / 9)) * 0.03 : 0;
 	return (
 		<AbsoluteFill style={{background: `radial-gradient(circle at 50% 45%, ${brand.charcoal}, ${brand.deep} 75%)`}}>

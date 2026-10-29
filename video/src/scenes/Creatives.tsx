@@ -48,8 +48,8 @@ export const Creatives: React.FC = () => {
 			<div style={{position: 'absolute', left: 730, top: 235, display: 'flex', gap: 30, fontFamily: BODY, color: '#fff'}}>
 				{ADS.map((ad, i) => {
 					const s = pop(frame, fps, 8 + i * 8, 15);
-					const verdict = pop(frame, fps, 84 + i * 10, 11);
-					const winner = i === 0 ? progress(frame, 120, 24) : 0;
+					const verdict = pop(frame, fps, [96, 112, 127][i], 11);
+					const winner = i === 0 ? progress(frame, 96, 24) : 0;
 					return (
 						<div
 							key={ad.name}

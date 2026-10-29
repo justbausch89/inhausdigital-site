@@ -175,7 +175,7 @@ export const ProfitCheck: React.FC = () => (
 						</Panel>
 					))}
 				</div>
-				<Panel delay={84} style={{flex: 1, padding: '18px 22px'}}>
+				<Panel delay={70} style={{flex: 1, padding: '18px 22px'}}>
 					<div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
 						<div style={{fontSize: 19, fontWeight: 800}}>What the platforms claim vs what really sold</div>
 						<div style={{display: 'flex', gap: 16, fontSize: 14, color: ui.muted}}>
@@ -190,8 +190,8 @@ export const ProfitCheck: React.FC = () => (
 						</div>
 					</div>
 					<div style={{fontSize: 14, color: ui.muted, margin: '4px 0 22px'}}>ROAS for yesterday</div>
-					<Compare start={92} />
-					<Advice start={190} />
+					<Compare start={78} />
+					<Advice start={184} />
 				</Panel>
 			</div>
 		</AppWindow>

@@ -28,7 +28,7 @@ const Phone: React.FC<{start: number}> = ({start}) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 	const rise = pop(frame, fps, start, 16);
-	const note = pop(frame, fps, start + 50, 14);
+	const note = pop(frame, fps, start + 42, 14);
 	const t = frame / fps;
 	return (
 		<div
@@ -115,8 +115,8 @@ const Phone: React.FC<{start: number}> = ({start}) => {
 export const Pocket: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
-	const gather = progress(frame, 96, 30, easeInOut);
-	const firstOut = progress(frame, 98, 14);
+	const gather = progress(frame, 76, 28, easeInOut);
+	const firstOut = progress(frame, 78, 12);
 	return (
 		<AbsoluteFill style={{background: `radial-gradient(circle at 65% 45%, #3a3a3a, ${brand.deep} 70%)`}}>
 			<Shape kind="q-tl" size={220} color={brand.yellow} x={1740} y={900} delay={6} />
@@ -131,7 +131,7 @@ export const Pocket: React.FC = () => {
 					size={76}
 				/>
 			</div>
-			<Sequence from={110} layout="none">
+			<Sequence from={88} layout="none">
 				<Caption
 					eyebrow="ALWAYS ON"
 					lines={['An AI brain', 'in your pocket.']}
@@ -189,7 +189,7 @@ export const Pocket: React.FC = () => {
 					</div>
 				);
 			})}
-			<Phone start={108} />
+			<Phone start={84} />
 		</AbsoluteFill>
 	);
 };

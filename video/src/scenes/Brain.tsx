@@ -28,8 +28,8 @@ export const Brain: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 	const core = pop(frame, fps, 4, 12);
-	const settle = progress(frame, 120, 30);
-	const briefIn = pop(frame, fps, 126, 16);
+	const settle = progress(frame, 104, 30);
+	const briefIn = pop(frame, fps, 108, 16);
 	return (
 		<AbsoluteFill style={{background: `radial-gradient(circle at 68% 40%, #3a3a3a, ${brand.deep} 70%)`}}>
 			<Shape kind="q-bl" size={200} color={brand.yellow} x={1740} y={-30} delay={6} bob={6} />
@@ -164,8 +164,8 @@ export const Brain: React.FC = () => {
 					<div style={{fontSize: 18, color: ui.muted, marginLeft: 'auto'}}>Today, 7:00am</div>
 				</div>
 				{BRIEF.map((line, i) => {
-					const start = 140 + i * 24;
-					const text = typed(line.text, frame, start, 2.6);
+					const start = 122 + i * 22;
+					const text = typed(line.text, frame, start, 3);
 					return (
 						<div key={i} style={{display: 'flex', alignItems: 'center', gap: 14, fontSize: 24, fontWeight: 600, color: '#DDE4F0', height: 44, opacity: frame >= start ? 1 : 0}}>
 							<span style={{width: 12, height: 12, borderRadius: 6, background: line.color, flexShrink: 0}} />

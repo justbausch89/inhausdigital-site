@@ -31,7 +31,7 @@ const Bars: React.FC<{start: number}> = ({start}) => {
 	return (
 		<div style={{marginTop: 14}}>
 			{TOP.map(([name, value], i) => {
-				const p = progress(frame, start + i * 5, 34);
+				const p = progress(frame, start + i * 4, 30);
 				return (
 					<div key={name} style={{display: 'flex', alignItems: 'center', height: 38, gap: 14}}>
 						<div style={{width: 210, textAlign: 'right', fontSize: 16, fontWeight: 600, color: '#C8D2E3', whiteSpace: 'nowrap'}}>{name}</div>
@@ -46,7 +46,7 @@ const Bars: React.FC<{start: number}> = ({start}) => {
 
 export const Products: React.FC = () => {
 	const frame = useCurrentFrame();
-	const tip = progress(frame, 120, 20);
+	const tip = progress(frame, 72, 18);
 	return (
 		<AbsoluteFill style={{background: `radial-gradient(circle at 70% 40%, #333, ${brand.deep})`}}>
 			<Shape kind="half-t" size={260} color={brand.yellow} x={160} y={950} delay={8} bob={6} />
@@ -83,11 +83,11 @@ export const Products: React.FC = () => {
 								<div style={{fontSize: 14, color: ui.muted}}>Ranked from store orders, coloured by class</div>
 							</div>
 						</div>
-						<Bars start={30} />
+						<Bars start={22} />
 					</Panel>
 					<div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12}}>
 						{ABC.map((c, i) => (
-							<Panel key={c.cls} delay={84 + i * 6} style={{padding: '14px 18px'}}>
+							<Panel key={c.cls} delay={58 + i * 5} style={{padding: '14px 18px'}}>
 								<div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
 									<div style={{fontSize: 16, fontWeight: 800, color: c.color}}>
 										{c.cls} · {c.title}
@@ -95,7 +95,7 @@ export const Products: React.FC = () => {
 									<Pill color={c.color}>{c.cls}</Pill>
 								</div>
 								<div style={{fontSize: 30, fontWeight: 800, marginTop: 4}}>
-									<CountUp value={c.count} start={88 + i * 6} />
+									<CountUp value={c.count} start={62 + i * 5} />
 									<span style={{fontSize: 15, color: ui.muted, fontWeight: 600}}> products</span>
 								</div>
 								<div style={{fontSize: 14, color: ui.muted}}>{c.share}</div>

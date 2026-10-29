@@ -48,20 +48,20 @@ const Caret: React.FC<{show: boolean}> = ({show}) => {
 export const Creator: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
-	const title = typed(TITLE, frame, 24, 1.2);
-	const desc = typed(DESCRIPTION, frame, 84, 2.4);
-	const fieldsIn = progress(frame, 58, 14);
+	const title = typed(TITLE, frame, 14, 1.6);
+	const desc = typed(DESCRIPTION, frame, 54, 3.4);
+	const fieldsIn = progress(frame, 38, 12);
 
 	// cursor glides to the button, clicks, then the push runs
 	const BTN = {x: 1540, y: 758};
-	const move = progress(frame, 132, 34, easeInOut);
+	const move = progress(frame, 88, 28, easeInOut);
 	const cursorX = interpolate(move, [0, 1], [1780, BTN.x]);
 	const cursorY = interpolate(move, [0, 1], [1040, BTN.y]);
-	const pressed = frame >= 168 && frame < 175;
-	const push = progress(frame, 172, 30);
-	const done = frame >= 204;
-	const doneIn = pop(frame, fps, 204, 12);
-	const toast = pop(frame, fps, 210, 14);
+	const pressed = frame >= 120 && frame < 127;
+	const push = progress(frame, 124, 16);
+	const done = frame >= 142;
+	const doneIn = pop(frame, fps, 142, 12);
+	const toast = pop(frame, fps, 144, 14);
 
 	return (
 		<AbsoluteFill style={{background: `radial-gradient(circle at 70% 40%, #333, ${brand.deep})`}}>
@@ -89,8 +89,8 @@ export const Creator: React.FC = () => {
 							</div>
 							<div style={{display: 'flex', gap: 10, marginTop: 16}}>
 								{[1, 2, 3].map((v) => (
-									<div key={v} style={{borderRadius: 8, overflow: 'hidden', border: `1px solid ${ui.border}`, transform: `scale(${pop(frame, fps, 30 + v * 5, 14)})`}}>
-										<Artwork variant={v} width={92} height={92} delay={34 + v * 5} />
+									<div key={v} style={{borderRadius: 8, overflow: 'hidden', border: `1px solid ${ui.border}`, transform: `scale(${pop(frame, fps, 20 + v * 4, 14)})`}}>
+										<Artwork variant={v} width={92} height={92} delay={24 + v * 4} />
 									</div>
 								))}
 							</div>
@@ -98,7 +98,7 @@ export const Creator: React.FC = () => {
 						<div style={{flex: 1, minWidth: 0}}>
 							<Field label="Title">
 								{title}
-								<Caret show={frame < 70} />
+								<Caret show={frame < 44} />
 							</Field>
 							<div style={{display: 'flex', gap: 14, opacity: fieldsIn}}>
 								<Field label="Price" style={{flex: 1}}>
@@ -112,7 +112,7 @@ export const Creator: React.FC = () => {
 								<Label style={{marginBottom: 7}}>Sizes</Label>
 								<div style={{display: 'flex', gap: 10}}>
 									{['30 × 40cm', '50 × 70cm', '70 × 100cm'].map((size, i) => (
-										<span key={size} style={{transform: `scale(${pop(frame, fps, 66 + i * 4, 12)})`, display: 'inline-block'}}>
+										<span key={size} style={{transform: `scale(${pop(frame, fps, 44 + i * 4, 12)})`, display: 'inline-block'}}>
 											<Pill color={brand.yellow} style={{fontSize: 16, padding: '7px 14px'}}>
 												{size}
 											</Pill>
@@ -120,13 +120,13 @@ export const Creator: React.FC = () => {
 									))}
 								</div>
 							</div>
-							<Field label="Description" extra={<Pill color={ui.purple}>✦ Written by AI</Pill>} style={{opacity: progress(frame, 76, 10)}}>
+							<Field label="Description" extra={<Pill color={ui.purple}>✦ Written by AI</Pill>} style={{opacity: progress(frame, 48, 8)}}>
 								<div style={{minHeight: 76, fontWeight: 500, color: '#D4DBE8'}}>
 									{desc}
-									<Caret show={frame >= 84 && desc.length < DESCRIPTION.length} />
+									<Caret show={frame >= 54 && desc.length < DESCRIPTION.length} />
 								</div>
 							</Field>
-							<div style={{display: 'flex', gap: 10, marginBottom: 22, opacity: progress(frame, 120, 12)}}>
+							<div style={{display: 'flex', gap: 10, marginBottom: 22, opacity: progress(frame, 80, 10)}}>
 								<Label style={{alignSelf: 'center', marginRight: 4}}>Collections</Label>
 								<Pill color={ui.teal}>Abstract</Pill>
 								<Pill color={ui.teal}>Best sellers</Pill>
@@ -156,7 +156,7 @@ export const Creator: React.FC = () => {
 					</div>
 				</div>
 			</AppWindow>
-			{frame >= 128 ? <Cursor x={cursorX} y={cursorY} pressed={pressed} /> : null}
+			{frame >= 84 ? <Cursor x={cursorX} y={cursorY} pressed={pressed} /> : null}
 			<div
 				style={{
 					position: 'absolute',

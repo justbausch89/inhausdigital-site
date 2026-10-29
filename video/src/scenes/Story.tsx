@@ -27,9 +27,9 @@ export const Story: React.FC = () => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 	const photo = progress(frame, 0, 30);
-	const brandIn = pop(frame, fps, 36, 14);
+	const brandIn = pop(frame, fps, 28, 14);
 	const chart = pop(frame, fps, 70, 16);
-	const line = progress(frame, 80, 50);
+	const line = progress(frame, 80, 40);
 	return (
 		<AbsoluteFill style={{background: brand.charcoal}}>
 			<div style={{position: 'absolute', left: 900, top: 0, right: 0, bottom: 0, overflow: 'hidden', background: brand.yellow, opacity: photo}}>
@@ -79,7 +79,7 @@ export const Story: React.FC = () => {
 
 			<div style={{position: 'absolute', left: 110, top: 660, width: 700, fontFamily: BODY}}>
 				{POINTS.map((point, i) => {
-					const p = progress(frame, 60 + i * 34, 20);
+					const p = progress(frame, [64, 134][i], 20);
 					return (
 						<div
 							key={point.text}

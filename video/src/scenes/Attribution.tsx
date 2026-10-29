@@ -68,7 +68,9 @@ const Journey: React.FC<{start: number}> = ({start}) => {
 	const frame = useCurrentFrame();
 	const {fps} = useVideoConfig();
 	const card = pop(frame, fps, start, 16);
-	const line = progress(frame, start + 14, 70);
+	// each step lights up as the voiceover says it
+	const STEP_AT = [120, 141, 165, 193];
+	const line = interpolate(frame, STEP_AT, [0, 1 / 3, 2 / 3, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
 	const W = 1700;
 	const xs = STEPS.map((_, i) => 170 + i * ((W - 340) / (STEPS.length - 1)));
 	const dotX = interpolate(line, [0, 1], [xs[0], xs[xs.length - 1]]);
@@ -96,7 +98,7 @@ const Journey: React.FC<{start: number}> = ({start}) => {
 			<div style={{position: 'absolute', left: xs[0], top: 92, width: (xs[xs.length - 1] - xs[0]) * line, height: 4, borderRadius: 2, background: `linear-gradient(90deg, ${ui.blue}, ${ui.red}, ${ui.purple}, ${brand.yellow})`}} />
 			<div style={{position: 'absolute', left: dotX - 9, top: 85, width: 18, height: 18, borderRadius: 9, background: '#fff', boxShadow: '0 0 18px #fff', opacity: line < 1 ? card : 0}} />
 			{STEPS.map((step, i) => {
-				const reached = pop(frame, fps, start + 14 + i * 22, 11);
+				const reached = pop(frame, fps, STEP_AT[i] - 4, 11);
 				return (
 					<div key={step.what} style={{position: 'absolute', left: xs[i] - 160, top: 58, width: 320, textAlign: 'center'}}>
 						<div
@@ -167,7 +169,7 @@ export const Attribution: React.FC = () => (
 				</Panel>
 			</div>
 		</AppWindow>
-		<Journey start={118} />
+		<Journey start={72} />
 	</AbsoluteFill>
 );
 

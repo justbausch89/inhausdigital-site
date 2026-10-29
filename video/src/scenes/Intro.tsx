@@ -11,7 +11,7 @@ export const Intro: React.FC = () => {
 	const mark = pop(frame, fps, 4, 11);
 	const meet = progress(frame, 16, 18);
 	const name = pop(frame, fps, 22, 14);
-	const sub = progress(frame, 40, 20);
+	const sub = progress(frame, 52, 20);
 	return (
 		<AbsoluteFill style={{background: brand.yellow}}>
 			<Shape kind="q-tl" size={340} color={brand.charcoal} x={-60} y={800} delay={6} bob={6} />

@@ -32,7 +32,7 @@ Shared styles are in `public/assets/css/site.css` (colours and fonts at the top)
 
 ## Workshop landing pages
 
-The three workshop pages share most of their sections (agency pain points, what's included, the platform, the team, the booking form). The booking forms post to Web3Forms like the contact form, with the workshop pre-ticked and a hidden `page` field so enquiries say where they came from. The platform section on each workshop page plays the 80-second InHaus App video (see below). The InHaus App page shows the same video, followed by a step-by-step walkthrough that is HTML and CSS animation driven by `site.js` (`[data-tour]`).
+The three workshop pages share most of their sections (agency pain points, what's included, the platform, the team, the booking form). The booking forms post to Web3Forms like the contact form, with the workshop pre-ticked and a hidden `page` field so enquiries say where they came from. The platform section on each workshop page plays the InHaus App video (see below). The InHaus App page shows the same video, followed by a step-by-step walkthrough that is HTML and CSS animation driven by `site.js` (`[data-tour]`).
 
 ## Hosting: Cloudflare
 
@@ -58,6 +58,8 @@ Our own MP4s use the same block with `data-mp4` instead of `data-video`, and `hr
 ## The InHaus App video
 
 The promo video (`public/assets/video/inhaus-app.mp4`, with `inhaus-app-poster.webp` as its thumbnail) is made with [Remotion](https://www.remotion.dev), which builds video from code. Its source is in [`video/`](video), separate from the website, and isn't deployed. All the figures in it are sample data.
+
+The voiceover is `video/public/voiceover.mp3` (made with an AI voice from the script). It sets the video's pace: `video/src/Video.tsx` lists the second each scene's line starts, and each scene's animations are timed to its words. With a new recording, update those start times and the length (`VOICE_END`).
 
 - Scene order and timing: `video/src/Video.tsx` (30 frames = 1 second)
 - Each scene, with its words and sample numbers: `video/src/scenes/`
