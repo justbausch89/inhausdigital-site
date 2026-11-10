@@ -28,7 +28,7 @@ SITE = 'https://www.inhausdigital.com.au'
 # 'https://calendly.com/your-name/quick-chat'. While this is empty the pages say
 # "we'll be in touch" and nothing from Calendly loads. With a link, the thank-you page
 # shows the booking calendar and the wording changes to "pick a time".
-CALENDLY_URL = 'https://calendly.com/justin-inhausdigital/30min'
+CALENDLY_URL = 'https://calendly.com/felisha-inhausdigital/30min'
 CHAT_STEP = 'Pick a time for a quick chat' if CALENDLY_URL else 'We’ll be in touch to set up a quick chat'
 
 SPRITE = '''  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
