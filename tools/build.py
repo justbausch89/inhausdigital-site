@@ -4,10 +4,23 @@
 #   InHaus App, the thank-you pages and the privacy policy.
 # - Keeps the header and footer the same on the hand-written pages (home, services, about,
 #   contact, media, 404) by rewriting those two blocks in place. Their content is edited by hand.
-import os, re, sys
+# - Stamps the stylesheet and script links on every page, so run it after changing either file.
+import hashlib, os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, '..', 'public')
+
+
+# Every page links the stylesheet and script with a short stamp of their contents
+# (site.css?v=1a2b3c4d). When either file changes, its address changes with it, so a
+# browser can never keep showing an old copy after an update.
+def stamp(asset):
+    with open(os.path.join(OUT, asset.lstrip('/')), 'rb') as f:
+        return f'{asset}?v={hashlib.md5(f.read()).hexdigest()[:8]}'
+
+
+CSS = stamp('/assets/css/site.css')
+JS = stamp('/assets/js/site.js')
 KEY = '6ce5cb49-0e93-4e2a-8fad-6b6bf7481932'
 SITE = 'https://www.inhausdigital.com.au'
 
@@ -253,9 +266,9 @@ def head(title, desc, path, cta=APPLY, index=True):
 
   <link rel="preload" href="/assets/fonts/righteous-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="{CSS}">
   <script>document.documentElement.classList.add('js')</script>
-  <script defer src="/assets/js/site.js"></script>
+  <script defer src="{JS}"></script>
 </head>
 <body>
 {SPRITE}
@@ -1096,6 +1109,8 @@ for name, path in HAND_WRITTEN.items():
     html = open(full, encoding='utf-8').read()
     new = re.sub(r'  <header class="site-header">.*?</header>', lambda m: header(path, ENQUIRE), html, count=1, flags=re.S)
     new = re.sub(r'  <footer class="site-footer">.*?</footer>', lambda m: FOOTER_BLOCK, new, count=1, flags=re.S)
+    new = re.sub(r'/assets/css/site\.css(\?v=\w+)?"', CSS + '"', new)
+    new = re.sub(r'/assets/js/site\.js(\?v=\w+)?"', JS + '"', new)
     if new != html:
         open(full, 'w', encoding='utf-8').write(new)
     print('synced', name, '(changed)' if new != html else '')

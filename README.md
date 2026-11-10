@@ -59,6 +59,8 @@ python3 tools/build.py
 
 So a change to the menu or footer is made once, in `tools/build.py`, and applied everywhere by running it.
 
+The script also stamps the stylesheet and script links on every page with a short version code (`site.css?v=…`). **Run it after any change to `site.css` or `site.js`**, so browsers pick up the new files instead of an old saved copy.
+
 ## Workshop landing pages
 
 These are the pages ads point to, so they are built for someone arriving cold on a phone: who teaches it and an Apply button on the first screen, client logos, the problem, proof, who it's for, what's covered, how it runs, the platform, the team, questions and the application form. On phones and tablets an Apply bar stays at the bottom of the screen once the first screen has scrolled away.
