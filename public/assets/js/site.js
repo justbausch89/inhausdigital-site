@@ -2,7 +2,7 @@
 (function () {
   // Meta (Facebook/Instagram) Pixel ID. Leave empty and no tracking code loads at all.
   // Paste the ID from Meta Events Manager between the quotes to switch it on.
-  var META_PIXEL_ID = '';
+  var META_PIXEL_ID = '1819712446021590';
 
   var body = document.body;
 
