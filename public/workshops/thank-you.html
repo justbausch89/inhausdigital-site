@@ -74,17 +74,23 @@
 
   <main id="main">
 
-    <section class="page-hero section--yellow thanks" aria-labelledby="page-title">
+    <section class="page-hero section--yellow thanks thanks--compact" aria-labelledby="page-title">
       <div class="container">
         <span class="thanks__tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
         <p class="eyebrow"><svg aria-hidden="true"><use href="#i-asterisk"/></svg>Application received</p>
-        <h1 id="page-title" class="display-xl">Thanks. We’ve got it.</h1>
-        <p class="lead">We’ll be in touch to set up a quick chat about your business and where you’re at. Keep an eye on your phone and inbox.</p>
-        <ol class="next-steps">
-          <li class="is-done">You told us about your business</li>
-          <li>We’ll be in touch to set up a quick chat</li>
-          <li>We book in your 2-hour workshop</li>
-        </ol>
+        <h1 id="page-title" class="display-xl">Thanks. <span>Now pick a time.</span></h1>
+        <p class="lead">One last step: choose a time below for a quick chat about your business and where you’re at.</p>
+
+      </div>
+    </section>
+
+    <section class="section section--cream booking" aria-labelledby="book-title">
+      <div class="container">
+        <h2 id="book-title" class="visually-hidden">Book your quick chat</h2>
+        <div class="booking__frame" data-calendly="https://calendly.com/justin-inhausdigital/30min">
+          <a class="btn btn--dark" href="https://calendly.com/justin-inhausdigital/30min">Choose a time <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+        <p class="booking__note">Can’t see a time that works? Don’t worry, we’ve got your details and we’ll be in touch.</p>
       </div>
     </section>
 

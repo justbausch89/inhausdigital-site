@@ -9,7 +9,6 @@ The site is live on Cloudflare at https://www.inhausdigital.com.au and redeploys
 Still to do before running ads:
 
 - [ ] Paste the Meta Pixel ID into `public/assets/js/site.js` (see "Ads and tracking")
-- [ ] Add the Calendly link for the quick chat to `tools/build.py` (see "Ads and tracking")
 - [ ] Have the owners read and approve the wording of the privacy policy
 - [ ] Add customer testimonials to the workshop pages when available
 
