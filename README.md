@@ -9,6 +9,7 @@ The site is live on Cloudflare at https://www.inhausdigital.com.au and redeploys
 Still to do before running ads:
 
 - [ ] Paste the Meta Pixel ID into `public/assets/js/site.js` (see "Ads and tracking")
+- [ ] Add the Calendly link for the quick chat to `tools/build.py` (see "Ads and tracking")
 - [ ] Have the owners read and approve the wording of the privacy policy
 - [ ] Add customer testimonials to the workshop pages when available
 
@@ -71,6 +72,7 @@ The forms on the homepage and contact page post to [Web3Forms](https://web3forms
 
 - **Meta Pixel.** Paste the Pixel ID into `META_PIXEL_ID` at the top of `public/assets/js/site.js`. While it is empty, no tracking code loads. Once set, every page reports a page view, a workshop application reports a `Lead` and a general enquiry reports a `Contact`.
 - **Thank-you pages.** A successful form sends the visitor to `/workshops/thank-you` or `/thank-you`. The lead is counted there, once: refreshing the page doesn't count again. Both pages are hidden from search engines.
+- **Booking a call (Calendly).** Put the Calendly link for the quick chat into `CALENDLY_URL` near the top of `tools/build.py` and run the script. The thank-you page after a workshop application then shows the booking calendar, with the applicant's name and email filled in and the campaign tags passed to Calendly, and the pages' wording changes from "we'll be in touch" to "pick a time". A booking reports a `Schedule` event to Meta. While the setting is empty, nothing from Calendly loads.
 - **Which ad a lead came from.** If an ad's link carries campaign tags (`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`), they are remembered for the visit and added to the enquiry email, with the first page the person landed on. Example ad link: `https://www.inhausdigital.com.au/workshops/meta-ads?utm_source=meta&utm_medium=paid&utm_campaign=workshops&utm_content=video-1`
 - **Visitor numbers.** Cloudflare Web Analytics is on for the site (Cloudflare dashboard → Analytics & Logs → Web Analytics). It uses no cookies.
 

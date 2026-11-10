@@ -282,6 +282,41 @@
     show(0);
   });
 
+  // Booking calendar on the thank-you page: show Calendly inside the page, with the applicant's
+  // name and email already filled in and the ad's campaign tags passed along to Calendly.
+  var booking = document.querySelector('[data-calendly]');
+  if (booking) {
+    var applicant = {};
+    try { applicant = JSON.parse(store.get('applicant') || '{}'); } catch (e) { applicant = {}; }
+    var calendar = new URLSearchParams({
+      embed_domain: location.hostname, embed_type: 'Inline', hide_gdpr_banner: '1',
+      primary_color: '2f2f2f', text_color: '2f2f2f', background_color: 'ffffff'
+    });
+    if (applicant.name) calendar.set('name', applicant.name);
+    if (applicant.email) calendar.set('email', applicant.email);
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (tag) {
+      if (arrival[tag]) calendar.set(tag, arrival[tag]);
+    });
+    var link = booking.getAttribute('data-calendly');
+    var frame = document.createElement('iframe');
+    frame.src = link + (link.indexOf('?') === -1 ? '?' : '&') + calendar.toString();
+    frame.title = 'Book a quick chat';
+    booking.textContent = '';
+    booking.appendChild(frame);
+    // Calendly tells the page how tall it is and when a time has been booked
+    window.addEventListener('message', function (e) {
+      if (e.origin !== 'https://calendly.com' || !e.data || typeof e.data.event !== 'string') return;
+      if (e.data.event === 'calendly.page_height' && e.data.payload) {
+        var height = parseInt(e.data.payload.height, 10);
+        if (height > 300 && height < 2400) frame.style.height = height + 'px';
+      }
+      if (e.data.event === 'calendly.event_scheduled' && !booking.hasAttribute('data-booked')) {
+        booking.setAttribute('data-booked', '');
+        if (window.fbq) window.fbq('track', 'Schedule');
+      }
+    });
+  }
+
   // Current year in the footer
   document.querySelectorAll('[data-year]').forEach(function (el) {
     el.textContent = new Date().getFullYear();
@@ -322,6 +357,8 @@
         .then(function (sent) {
           status.textContent = sent ? 'Thanks! We’ll be in touch soon.' : FAILED;
           if (!sent) return;
+          // keep their name and email for this visit, to fill in the booking calendar for them
+          store.set('applicant', JSON.stringify({ name: ((data.first_name || '') + ' ' + (data.last_name || '')).trim(), email: data.email || '' }));
           form.reset();
           // on to the thank-you page, which is also where the lead is counted for Meta
           var thanks = form.getAttribute('data-thanks');

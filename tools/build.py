@@ -11,6 +11,13 @@ OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, '..', 'public')
 KEY = '6ce5cb49-0e93-4e2a-8fad-6b6bf7481932'
 SITE = 'https://www.inhausdigital.com.au'
 
+# Calendly link for the quick chat after someone applies, for example
+# 'https://calendly.com/your-name/quick-chat'. While this is empty the pages say
+# "we'll be in touch" and nothing from Calendly loads. With a link, the thank-you page
+# shows the booking calendar and the wording changes to "pick a time".
+CALENDLY_URL = ''
+CHAT_STEP = 'Pick a time for a quick chat' if CALENDLY_URL else 'We’ll be in touch to set up a quick chat'
+
 SPRITE = '''  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <symbol id="i-asterisk" viewBox="0 0 32 32"><path d="M16 4v24M4 16h24M7.5 7.5l17 17M24.5 7.5l-17 17" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.6v14.8a1 1 0 0 0 1.5.86l12.3-7.4a1 1 0 0 0 0-1.72L8.5 3.74A1 1 0 0 0 7 4.6Z" fill="currentColor"/></symbol>
@@ -33,7 +40,7 @@ WORKSHOPS = {
         name='Meta Ads', accent='pink', short='Best practice & optimisation',
         card='Structure, audiences, retargeting, creative and budget, so you can launch, manage and scale your own Meta Ads.',
         title='Meta Ads Workshop | InHaus Digital',
-        desc='A hands-on Meta Ads best practice and optimisation workshop. Learn to launch, manage and scale your own Facebook and Instagram ads with the team behind Style My Wall.',
+        desc='A hands-on, online Meta Ads best practice and optimisation workshop. Learn to launch, manage and scale your own Facebook and Instagram ads with the team behind Style My Wall.',
         h1='Run your own Meta Ads, <span class="text-pink">like a pro.</span>',
         lead='A hands-on Meta Ads best practice and optimisation workshop. Running ads for the first time, or already spending and not sure it’s working? We’ll teach you to run, read and scale them yourself.',
         img=('duo-warehouse.webp', 1200, 1179, 'orange', 'Justin Bausch and Felisha Mina at the Style My Wall warehouse'),
@@ -52,7 +59,7 @@ WORKSHOPS = {
         name='Google Ads', accent='green', short='Best practice & optimisation',
         card='Account audit, conversion tracking, optimisation and the key metrics that tell you when to scale or pull back.',
         title='Google Ads Workshop | InHaus Digital',
-        desc='A hands-on Google Ads best practice and optimisation workshop. Learn to set up, track and optimise your own Google Ads with the team behind Style My Wall.',
+        desc='A hands-on, online Google Ads best practice and optimisation workshop. Learn to set up, track and optimise your own Google Ads with the team behind Style My Wall.',
         h1='Make every Google Ads dollar <span class="text-green">work harder.</span>',
         lead='A hands-on Google Ads best practice and optimisation workshop. Setting up your first campaign, or already spending and unsure where the budget goes? We’ll teach you to run it efficiently yourself.',
         img=('talk-powerup.webp', 1000, 667, 'green', 'Justin Bausch speaking on stage at Power Retail PowerUP'),
@@ -71,7 +78,7 @@ WORKSHOPS = {
         name='CRM & Email', accent='orange', short='Flows, segmentation & automation',
         card='The flows, segments and campaigns that turn one-time buyers into repeat customers, set up so you can run them yourself.',
         title='CRM & Email Workshop | InHaus Digital',
-        desc='A hands-on CRM and email marketing workshop. Build the flows, segments and campaigns that drive repeat revenue, and learn to run them yourself.',
+        desc='A hands-on, online CRM and email marketing workshop. Build the flows, segments and campaigns that drive repeat revenue, and learn to run them yourself.',
         h1='Turn one-time buyers into <span class="text-orange">repeat customers.</span>',
         lead='A hands-on CRM and email workshop. Starting from scratch, or already sending emails without a plan? We’ll build the flows, segments and campaigns that drive repeat revenue with you, and teach you to run them yourself.',
         img=('duo-garden.webp', 900, 1350, 'orange', 'Justin Bausch and Felisha Mina talking on a garden terrace'),
@@ -379,16 +386,23 @@ def logo_strip():
 '''
 
 
+AFTER_APPLYING = (
+    'You can book a quick chat with us straight away, at a time that suits. We’ll talk through your business and where you’re at, then book in your 2-hour workshop.'
+    if CALENDLY_URL else
+    'We’ll be in touch to set up a quick chat about your business and where you’re at. From there we book in your 2-hour workshop at a time that suits.')
+
+
 def faq(start, note):
     items = [
         start,
         ('How does the workshop run?', f'{note} You leave the first session with a clear plan for your structure, budget and next steps.'),
+        ('Is it online or in person?', 'Online. You can join from wherever you are, and we work in your own accounts together.'),
         ('Will we be working in my own accounts?', 'Yes. It’s hands-on implementation and training in your own accounts, so everything we set up together is yours to keep running.'),
         ('Who will I be learning from?', 'Justin and Felisha, the co-founders of InHaus Digital and Style My Wall. You’ll learn from us, not a junior.'),
         ('What if I get stuck between sessions?', 'Ask us. Support between sessions is included, and we review results and optimise together at each weekly catch-up.'),
         ('Do I get access to the InHaus App?', 'Yes. Join a workshop and you join the InHaus team: you get your own login to the platform Justin built to run Style My Wall.'),
         ('Can I do more than one workshop?', 'Yes. Take one, or work through them back to back.'),
-        ('What happens after I apply?', 'We’ll be in touch to set up a quick chat about your business and where you’re at. From there we book in your 2-hour workshop at a time that suits.'),
+        ('What happens after I apply?', AFTER_APPLYING),
     ]
     rows = '\n'.join(f'''          <details class="faq__item">
             <summary>{q}<span class="faq__icon" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></summary>
@@ -414,7 +428,7 @@ def faq(start, note):
 def apply_bar(name):
     return f'''
   <div class="apply-bar" data-apply-bar>
-    <p>{name}<span>with Justin &amp; Felisha</span></p>
+    <p>{name}<span>Online, with Justin &amp; Felisha</span></p>
     <a class="btn" href="#enquire">Apply now {ARROW}</a>
   </div>
 '''
@@ -525,7 +539,7 @@ def included(note):
           <h2 id="included-title" class="display-lg">What’s included</h2>
         </div>
         <ol class="included" data-reveal="2">
-          <li><h3>2-hour workshop</h3><p>A hands-on implementation and training session, working in your own accounts.</p></li>
+          <li><h3>2-hour workshop</h3><p>A hands-on implementation and training session online, working in your own accounts.</p></li>
           <li><h3>Strategy development</h3><p>A clear plan for your structure, budget and next steps.</p></li>
           <li><h3>Weekly catch-ups</h3><p>30 minutes every week to review results and optimise together.</p></li>
           <li><h3>Support</h3><p>Questions between sessions? We’re there to help.</p></li>
@@ -625,6 +639,10 @@ TEAM = f'''
 '''
 
 
+APPLY_LEAD = ('Tell us a little about your business and where you’re at, then pick a time for a quick chat.' if CALENDLY_URL else
+              'Tell us a little about your business and where you’re at. We’ll be in touch to find the right workshop and a time that suits.')
+
+
 def enquire(h2, checked, page_name):
     opts = [('Meta Ads', 'meta-ads'), ('Google Ads', 'google-ads'), ('CRM & Email', 'crm-email')]
     boxes = '\n'.join(
@@ -637,10 +655,10 @@ def enquire(h2, checked, page_name):
         <div class="contact__intro" data-reveal>
           <p class="eyebrow">{ASTERISK}Apply now</p>
           <h2 id="enquire-title" class="display-lg">{h2}</h2>
-          <p class="lead">Tell us a little about your business and where you’re at. We’ll be in touch to find the right workshop and a time that suits.</p>
+          <p class="lead">{APPLY_LEAD}</p>
           <ol class="next-steps">
             <li>Tell us about your business</li>
-            <li>We’ll be in touch to set up a quick chat</li>
+            <li>{CHAT_STEP}</li>
             <li>We book in your 2-hour workshop</li>
           </ol>
         </div>
@@ -720,9 +738,9 @@ def write(path, html):
 
 # Parent page
 parent = head('Workshops | InHaus Digital',
-              'Hands-on Meta Ads, Google Ads and CRM/email workshops. Learn to run your own marketing with the team behind Style My Wall, and get access to the InHaus growth platform.',
+              'Hands-on, online Meta Ads, Google Ads and CRM/email workshops. Learn to run your own marketing with the team behind Style My Wall, and get access to the InHaus growth platform.',
               '/workshops')
-parent += hero('Workshops', 'Stop paying an agency. <span class="text-pink">Learn to do it yourself.</span>',
+parent += hero('Online workshops', 'Stop paying an agency. <span class="text-pink">Learn to do it yourself.</span>',
                'Hands-on Meta Ads, Google Ads and CRM/email workshops from the duo who built Style My Wall. Running ads for the first time, or already spending and unsure what’s working? We’ll teach you to run it like a pro.',
                ('talk-powerup.webp', 1000, 667, 'yellow', 'Justin Bausch speaking on stage at Power Retail PowerUP'), '#workshops', 'See the workshops')
 parent += logo_strip()
@@ -760,7 +778,7 @@ write('workshops.html', parent)
 for slug, w in WORKSHOPS.items():
     others = [s for s in WORKSHOPS if s != slug]
     page = head(w['title'], w['desc'], f'/workshops/{slug}')
-    page += hero(f'Workshop · {w["name"].replace("&", "&amp;")}', w['h1'], w['lead'], w['img'], '#covered', 'What’s covered')
+    page += hero(f'Online workshop · {w["name"].replace("&", "&amp;")}', w['h1'], w['lead'], w['img'], '#covered', 'What’s covered')
     page += logo_strip()
     page += pains(w['platform_line'])
     page += PROOF
@@ -932,14 +950,14 @@ write('inhaus-app.html', app)
 
 # Thank-you pages: where the forms send people once their details are in. Search engines skip
 # them, and site.js reports the lead to Meta from here (once a Pixel ID is set).
-def thanks(path, title, eyebrow, lead, body):
+def thanks(path, title, eyebrow, lead, body, h1='Thanks. We’ve got it.', compact=False):
     page = head(title, 'Thanks for getting in touch with InHaus Digital.', path, cta=ENQUIRE, index=False)
     page += f'''
-    <section class="page-hero section--yellow thanks" aria-labelledby="page-title">
+    <section class="page-hero section--yellow thanks{' thanks--compact' if compact else ''}" aria-labelledby="page-title">
       <div class="container">
         <span class="thanks__tick" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
         <p class="eyebrow">{ASTERISK}{eyebrow}</p>
-        <h1 id="page-title" class="display-xl">Thanks. We’ve got it.</h1>
+        <h1 id="page-title" class="display-xl">{h1}</h1>
         <p class="lead">{lead}</p>
 {body}
       </div>
@@ -948,9 +966,26 @@ def thanks(path, title, eyebrow, lead, body):
     return page
 
 
-workshop_thanks = thanks('/workshops/thank-you', 'Application received | InHaus Digital', 'Application received',
-                         'We’ll be in touch to set up a quick chat about your business and where you’re at. Keep an eye on your phone and inbox.',
-                         '''        <ol class="next-steps">
+if CALENDLY_URL:
+    workshop_thanks = thanks('/workshops/thank-you', 'Application received | InHaus Digital', 'Application received',
+                             'One last step: choose a time below for a quick chat about your business and where you’re at.',
+                             '', h1='Thanks. <span>Now pick a time.</span>', compact=True)
+    # The calendar itself is loaded by site.js. Without JavaScript the button opens Calendly instead.
+    workshop_thanks += f'''
+    <section class="section section--cream booking" aria-labelledby="book-title">
+      <div class="container">
+        <h2 id="book-title" class="visually-hidden">Book your quick chat</h2>
+        <div class="booking__frame" data-calendly="{CALENDLY_URL}">
+          <a class="btn btn--dark" href="{CALENDLY_URL}">Choose a time {ARROW}</a>
+        </div>
+        <p class="booking__note">Can’t see a time that works? Don’t worry, we’ve got your details and we’ll be in touch.</p>
+      </div>
+    </section>
+'''
+else:
+    workshop_thanks = thanks('/workshops/thank-you', 'Application received | InHaus Digital', 'Application received',
+                             'We’ll be in touch to set up a quick chat about your business and where you’re at. Keep an eye on your phone and inbox.',
+                             '''        <ol class="next-steps">
           <li class="is-done">You told us about your business</li>
           <li>We’ll be in touch to set up a quick chat</li>
           <li>We book in your 2-hour workshop</li>
@@ -1013,7 +1048,7 @@ privacy += f'''
         </ul>
 
         <h2>Who we share it with</h2>
-        <p>We don’t sell your personal information. We share it only with the service providers that help us run this website and our business, such as our website host, our form and email providers and our advertising platforms, and only so they can provide those services to us. Some of these providers store information outside Australia.</p>
+        <p>We don’t sell your personal information. We share it only with the service providers that help us run this website and our business, such as our website host, our form, booking and email providers and our advertising platforms, and only so they can provide those services to us. Some of these providers store information outside Australia.</p>
 
         <h2>Keeping it safe</h2>
         <p>We take reasonable steps to protect your information from misuse, loss and unauthorised access, and we keep it only for as long as we need it for the purposes above or as the law requires.</p>
