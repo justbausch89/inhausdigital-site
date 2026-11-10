@@ -1573,14 +1573,17 @@ fieldset.field { min-width: 0; margin: 0; padding: 0; border: 0; }
 /* ---------- Page-load entrance and page-to-page transitions ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
-  /* hero copy rises in, one piece after another */
+  /* Hero copy: the headline and paragraph are on screen from the first instant and only slide
+     up a little, so nothing delays the main message. Buttons, the "taught by" line and the
+     photo then fade in after them. */
   .js .hero__copy > *,
   .js .page-hero .container > div:first-child > *,
-  .js .page-hero > .container > :not(div):not(figure) { animation: rise-in 0.8s cubic-bezier(.2, .7, .2, 1) backwards; }
-  .js .hero__copy > :nth-child(2), .js .page-hero .container > div:first-child > :nth-child(2), .js .page-hero > .container > :nth-child(2) { animation-delay: 0.06s; }
-  .js .hero__copy > :nth-child(3), .js .page-hero .container > div:first-child > :nth-child(3), .js .page-hero > .container > :nth-child(3) { animation-delay: 0.14s; }
-  .js .hero__copy > :nth-child(4), .js .page-hero .container > div:first-child > :nth-child(4), .js .page-hero > .container > :nth-child(4) { animation-delay: 0.22s; }
-  .js .hero__copy > :nth-child(n + 5), .js .page-hero .container > div:first-child > :nth-child(n + 5), .js .page-hero > .container > :nth-child(n + 5) { animation-delay: 0.3s; }
+  .js .page-hero > .container > :not(div):not(figure) { animation: slide-up 0.7s cubic-bezier(.2, .7, .2, 1) backwards; }
+  .js .hero__copy > .btn-row,
+  .js .page-hero .container > div:first-child > .btn-row,
+  .js .page-hero > .container > .btn-row { animation: rise-in 0.7s cubic-bezier(.2, .7, .2, 1) 0.15s backwards; }
+  .js .page-hero .container > div:first-child > .hero-proof,
+  .js .page-hero > .container > .next-steps { animation: rise-in 0.7s cubic-bezier(.2, .7, .2, 1) 0.28s backwards; }
   .js .page-hero__media .tint { animation: media-in 1s cubic-bezier(.2, .8, .2, 1) 0.1s backwards; }
   .js .page-hero__media .shape { animation: pop-in 0.9s cubic-bezier(.2, .8, .2, 1) 0.45s backwards; }
 
@@ -1589,6 +1592,7 @@ fieldset.field { min-width: 0; margin: 0; padding: 0; border: 0; }
   ::view-transition-old(root),
   ::view-transition-new(root) { animation-duration: 0.28s; }
 }
+@keyframes slide-up { from { transform: translateY(18px); } }
 @keyframes rise-in { from { opacity: 0; transform: translateY(22px); } }
 @keyframes media-in { from { opacity: 0; transform: scale(0.9); } }
 
