@@ -224,7 +224,7 @@
               <span>weekends in 12 months.</span>
             </li>
             <li data-reveal="3">
-              <strong class="results__value">35%</strong>
+              <strong class="results__value" data-count="35" data-suffix="%">35%</strong>
               <span>increase in email contribution to total business revenue for a global gym apparel brand.</span>
             </li>
           </ul>
@@ -431,16 +431,16 @@
           </div>
         </div>
 
-        <form class="form" data-form="contact" action="https://api.web3forms.com/submit" method="POST" data-reveal="2">
+        <form class="form" data-form="contact" data-thanks="/thank-you" action="https://api.web3forms.com/submit" method="POST" data-reveal="2">
           <input type="hidden" name="access_key" value="6ce5cb49-0e93-4e2a-8fad-6b6bf7481932">
           <input type="hidden" name="subject" value="New enquiry from inhausdigital.com.au">
           <input type="hidden" name="from_name" value="InHaus Digital website">
           <input type="checkbox" name="botcheck" class="form__trap" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div class="field">
+          <div class="field field--pair">
             <label for="first-name">First name</label>
             <input id="first-name" name="first_name" type="text" autocomplete="given-name" required>
           </div>
-          <div class="field">
+          <div class="field field--pair">
             <label for="last-name">Last name</label>
             <input id="last-name" name="last_name" type="text" autocomplete="family-name" required>
           </div>
@@ -485,6 +485,7 @@
             <button class="btn btn--dark" type="submit">Enquire now <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
             <p class="form__status" data-form-status role="status" aria-live="polite"></p>
           </div>
+          <p class="form__note">We handle your details as set out in our <a href="/privacy">privacy policy</a>.</p>
         </form>
       </div>
     </section>
@@ -520,7 +521,7 @@
         </div>
       </div>
       <div class="site-footer__bottom">
-        <p class="site-footer__legal">© <span data-year>2026</span> InHaus Digital</p>
+        <p class="site-footer__legal">© <span data-year>2026</span> InHaus Digital <a href="/privacy">Privacy</a></p>
         <div class="shape-strip" data-drift aria-hidden="true">
           <span class="shape shape--green half-r"></span>
           <span class="shape shape--orange q-bl"></span>

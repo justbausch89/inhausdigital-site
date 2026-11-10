@@ -4,13 +4,13 @@ The new site for https://www.inhausdigital.com.au, replacing the Squarespace sit
 
 ## Status
 
-- [x] Homepage, Services, About, Media and Contact pages
-- [x] 404 page, sitemap, robots.txt, redirects for old Squarespace URLs
-- [x] Contact form connected to Web3Forms
-- [ ] Hosting connected (Cloudflare, see below)
-- [ ] Domain switched from Squarespace
+The site is live on Cloudflare at https://www.inhausdigital.com.au and redeploys on every push to `main`.
 
-The live site is still the Squarespace one until the domain is switched.
+Still to do before running ads:
+
+- [ ] Paste the Meta Pixel ID into `public/assets/js/site.js` (see "Ads and tracking")
+- [ ] Have the owners read and approve the wording of the privacy policy
+- [ ] Add customer testimonials to the workshop pages when available
 
 ## Pages
 
@@ -26,11 +26,29 @@ The live site is still the Squarespace one until the domain is switched.
 | Google Ads workshop | `public/workshops/google-ads.html` |
 | CRM & Email workshop | `public/workshops/crm-email.html` |
 | InHaus App | `public/inhaus-app.html` |
+| Thank you (after a workshop application) | `public/workshops/thank-you.html` |
+| Thank you (after a general enquiry) | `public/thank-you.html` |
+| Privacy policy | `public/privacy.html` |
 | Not found | `public/404.html` |
 
-Shared styles are in `public/assets/css/site.css` (colours and fonts at the top) and behaviour in `public/assets/js/site.js`: mobile menu, scroll fades, click-to-play videos and the contact form.
+Shared styles are in `public/assets/css/site.css` (colours and fonts at the top) and behaviour in `public/assets/js/site.js`: mobile menu, scroll fades, click-to-play videos, the forms and ad tracking.
+
+## How the pages are built
+
+There is no build step on Cloudflare: what's in `public/` is the site. One script keeps the pages consistent:
+
+```bash
+python3 tools/build.py
+```
+
+- It **writes** the pages whose content lives in the script: Workshops and the three workshop pages, InHaus App, both thank-you pages and the privacy policy. Edit their words in `tools/build.py`, not in the HTML, or the next run will overwrite the change.
+- It **keeps the header and footer the same** on the hand-written pages (home, services, about, contact, media, 404) by rewriting just those two blocks. Everything else on those pages is edited by hand in the HTML.
+
+So a change to the menu or footer is made once, in `tools/build.py`, and applied everywhere by running it.
 
 ## Workshop landing pages
+
+These are the pages ads point to, so they are built for someone arriving cold on a phone: who teaches it and an Apply button on the first screen, client logos, the problem, proof, who it's for, what's covered, how it runs, the platform, the team, questions and the application form. On phones and tablets an Apply bar stays at the bottom of the screen once the first screen has scrolled away.
 
 The three workshop pages share most of their sections (agency pain points, what's included, the platform, the team, the booking form). The booking forms post to Web3Forms like the contact form, with the workshop pre-ticked and a hidden `page` field so enquiries say where they came from. The platform section on each workshop page plays the InHaus App video (see below). The InHaus App page shows the same video, followed by a step-by-step walkthrough that is HTML and CSS animation driven by `site.js` (`[data-tour]`).
 
@@ -48,6 +66,15 @@ Every push to `main` then redeploys automatically. Cloudflare serves `/about` fr
 ## Contact form: Web3Forms
 
 The forms on the homepage and contact page post to [Web3Forms](https://web3forms.com), which emails each enquiry to the inbox set on the form in the Web3Forms dashboard. The access key is in the hidden `access_key` field in `public/index.html` and `public/contact.html`; it's meant to be public, so it's fine in the page source. Sending a copy to a second address (CC) is a Web3Forms Pro feature.
+
+## Ads and tracking
+
+- **Meta Pixel.** Paste the Pixel ID into `META_PIXEL_ID` at the top of `public/assets/js/site.js`. While it is empty, no tracking code loads. Once set, every page reports a page view, a workshop application reports a `Lead` and a general enquiry reports a `Contact`.
+- **Thank-you pages.** A successful form sends the visitor to `/workshops/thank-you` or `/thank-you`. The lead is counted there, once: refreshing the page doesn't count again. Both pages are hidden from search engines.
+- **Which ad a lead came from.** If an ad's link carries campaign tags (`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`), they are remembered for the visit and added to the enquiry email, with the first page the person landed on. Example ad link: `https://www.inhausdigital.com.au/workshops/meta-ads?utm_source=meta&utm_medium=paid&utm_campaign=workshops&utm_content=video-1`
+- **Visitor numbers.** Cloudflare Web Analytics is on for the site (Cloudflare dashboard → Analytics & Logs → Web Analytics). It uses no cookies.
+
+`public/_headers` sets how long browsers keep fonts and images, and a few standard security headers.
 
 ## Videos
 
@@ -108,7 +135,7 @@ Taken from the InHaus brand deck.
 
 **Photos** are shown in greyscale over a brand colour (the `tint` classes), which keeps the old site's yellow-and-black look and adds the deck's colours.
 
-## To check before going live
+## Still worth improving
 
 - **Felisha's bio** on the About page could use a line about her background.
 - **Client logos** are small images from the old site. Sharper SVG versions would look better on high-resolution screens.
