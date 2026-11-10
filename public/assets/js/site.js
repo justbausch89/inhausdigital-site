@@ -35,8 +35,9 @@
   var justSent = location.hash === '#sent';
   if (justSent && window.history.replaceState) history.replaceState(null, '', location.pathname + location.search);
 
-  // Meta Pixel: counts page views, plus a lead (workshop application) or a contact (general
-  // enquiry) when someone arrives on a thank-you page straight after sending a form.
+  // Meta Pixel: counts page views, plus a lead when someone arrives on a thank-you page
+  // straight after sending a form. Both forms count as a lead, so ads optimised for leads
+  // learn from every enquiry; the name says which form it was.
   if (META_PIXEL_ID) {
     /* eslint-disable */
     !function (f, b, e, v, n, t, s) {
@@ -47,8 +48,9 @@
     /* eslint-enable */
     window.fbq('init', META_PIXEL_ID);
     window.fbq('track', 'PageView');
-    if (justSent && location.pathname.indexOf('/workshops/') === 0) window.fbq('track', 'Lead', { content_name: 'Workshop application' });
-    else if (justSent) window.fbq('track', 'Contact');
+    if (justSent) {
+      window.fbq('track', 'Lead', { content_name: location.pathname.indexOf('/workshops/') === 0 ? 'Workshop application' : 'General enquiry' });
+    }
   }
 
   // Mobile menu

@@ -983,7 +983,7 @@ write('inhaus-app.html', app)
 
 
 # Thank-you pages: where the forms send people once their details are in. Search engines skip
-# them, and site.js reports the lead to Meta from here (once a Pixel ID is set).
+# them, and site.js reports the lead to Meta from here.
 def thanks(path, title, eyebrow, lead, body, h1='Thanks. We’ve got it.', compact=False):
     page = head(title, 'Thanks for getting in touch with InHaus Digital.', path, cta=ENQUIRE, index=False)
     page += f'''
