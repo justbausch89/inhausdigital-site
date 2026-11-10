@@ -308,6 +308,7 @@ FOOTER_BLOCK = '''  <footer class="site-footer">
         </div>
       </div>
     </div>
+    <p class="site-footer__mega" aria-hidden="true">InHaus Digital</p>
   </footer>'''
 
 FOOTER = f'''
@@ -324,7 +325,7 @@ BOOK = f'<a class="btn" href="#enquire">Apply now {ARROW}</a>'
 BOOK_DARK = f'<a class="btn btn--dark" href="#enquire">Apply now {ARROW}</a>'
 
 
-def hero(eyebrow, h1, lead, img, second_href, second_label):
+def hero(eyebrow, h1, lead, img, second_href, second_label, badge='Online workshop'):
     src, w, h, tint, alt = img
     return f'''
     <section class="page-hero section--charcoal" aria-labelledby="page-title">
@@ -348,6 +349,11 @@ def hero(eyebrow, h1, lead, img, second_href, second_label):
           </div>
           <span class="shape shape--pink q-tl" style="left:-8%;top:-4%" aria-hidden="true"></span>
           <span class="shape shape--yellow dot" style="right:-10%;bottom:6%" aria-hidden="true"></span>
+          <a class="spin-badge" href="#enquire">
+            <span class="visually-hidden">Apply now</span>
+            <svg viewBox="0 0 200 200" aria-hidden="true"><path id="spin-ring" d="M100 100m-76 0a76 76 0 1 1 152 0a76 76 0 1 1-152 0" fill="none"/><text><textPath href="#spin-ring" textLength="462" lengthAdjust="spacingAndGlyphs">{badge} • Apply now •</textPath></text></svg>
+            <span class="spin-badge__arrow" aria-hidden="true">{ARROW}</span>
+          </a>
         </figure>
       </div>
     </section>
@@ -424,6 +430,21 @@ def faq(start, note):
 '''
 
 
+def word_band(words, modifier=''):
+    row = ''.join(f'<li>{w}</li><li>{ASTERISK}</li>' for w in words)
+    return f'''
+    <div class="marquee{modifier}" role="img" aria-label="{', '.join(words)}">
+      <div class="marquee__track" aria-hidden="true">
+        <ul class="marquee__list">{row}</ul>
+        <ul class="marquee__list">{row}</ul>
+      </div>
+    </div>
+'''
+
+
+APPLY_BAND = word_band(['Take back control', 'Learn it yourself', 'Run it like a pro', 'Apply now'], ' marquee--pink marquee--outline')
+
+
 # Phones and tablets: an Apply button that stays within reach once the hero has scrolled away
 def apply_bar(name):
     return f'''
@@ -463,7 +484,7 @@ def pains(platform_line):
         <div class="manifesto" data-reveal>
           <h3>Most businesses don’t need an agency.</h3>
           <div>
-            <p class="lead">We believe 95% of businesses can do it themselves.</p>
+            <p class="lead">We believe <mark class="hl">95% of businesses</mark> can do it themselves.</p>
             <p>{platform_line}</p>
             <div class="btn-row">{BOOK}</div>
           </div>
@@ -742,7 +763,7 @@ parent = head('Workshops | InHaus Digital',
               '/workshops')
 parent += hero('Online workshops', 'Stop paying an agency. <span class="text-pink">Learn to do it yourself.</span>',
                'Hands-on Meta Ads, Google Ads and CRM/email workshops from the duo who built Style My Wall. Running ads for the first time, or already spending and unsure what’s working? We’ll teach you to run it like a pro.',
-               ('talk-powerup.webp', 1000, 667, 'yellow', 'Justin Bausch speaking on stage at Power Retail PowerUP'), '#workshops', 'See the workshops')
+               ('talk-powerup.webp', 1000, 667, 'yellow', 'Justin Bausch speaking on stage at Power Retail PowerUP'), '#workshops', 'See the workshops', badge='Online workshops')
 parent += logo_strip()
 parent += pains('Meta and Google have made it easier than ever to run your own ads. You just need to learn the best-practice way to do it, and how to scale. We do that with you, until you’re a master at running your own marketing.')
 parent += PROOF
@@ -770,7 +791,7 @@ PARENT_NOTE = 'Google Ads and Meta Ads each run over four weeks: a 2-hour hands-
 parent += included(PARENT_NOTE)
 parent += PLATFORM + TEAM
 parent += faq(('Do I need to be running ads already?', 'No. If you’re starting out, we set you up the right way from day one. If you’re already spending, we review what you’ve got, fix the structure and show you exactly where your money is going.'), PARENT_NOTE)
-parent += enquire('Ready to take back control?', None, 'Workshops')
+parent += APPLY_BAND + enquire('Ready to take back control?', None, 'Workshops')
 parent += FOOTER.replace('  </main>\n', '  </main>\n' + apply_bar('InHaus workshops'))
 write('workshops.html', parent)
 
@@ -785,7 +806,7 @@ for slug, w in WORKSHOPS.items():
     page += audience(w)
     page += covered(w)
     page += included(w['note'])
-    page += PLATFORM + TEAM + faq(w['faq_start'], w['note']) + enquire(w['enquire_h2'], slug, w['name'])
+    page += PLATFORM + TEAM + faq(w['faq_start'], w['note']) + APPLY_BAND + enquire(w['enquire_h2'], slug, w['name'])
     page += f'''
     <section class="section section--charcoal" aria-labelledby="others-title">
       <div class="container">

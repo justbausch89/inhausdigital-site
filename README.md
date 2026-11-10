@@ -33,6 +33,19 @@ Still to do before running ads:
 
 Shared styles are in `public/assets/css/site.css` (colours and fonts at the top) and behaviour in `public/assets/js/site.js`: mobile menu, scroll fades, click-to-play videos, the forms and ad tracking.
 
+## Look and motion
+
+The site's movement is all in `site.css` and `site.js`, with no animation library:
+
+- **Sheets.** Each section has rounded top corners and overlaps the one before it (`main > .section`).
+- **Headlines** reveal word by word: `site.js` wraps each word, the CSS slides it up (`.split`).
+- **On scroll:** blocks fade up (`data-reveal`), photos wipe into view, lists and card grids arrive one item after another, key numbers count up (`data-count`), and a marker underline draws under `<mark class="hl">`.
+- **Always moving:** the Bauhaus shapes, the word bands (which speed up or reverse with the scroll), the client-logo strip and the turning badge on the workshop hero photo.
+- **With a mouse:** hero shapes lean towards the pointer, buttons pull towards it, and a button's colour fills from the bottom on hover.
+- A thin progress bar at the top of the screen fills as the page is read, and pages slide in when moving around the site.
+
+Everything respects the "reduce motion" setting on a visitor's device: with it on, content simply appears.
+
 ## How the pages are built
 
 There is no build step on Cloudflare: what's in `public/` is the site. One script keeps the pages consistent:

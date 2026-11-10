@@ -130,8 +130,44 @@
   }
 
   // Fade sections in as they scroll into view
-  var reveals = document.querySelectorAll('[data-reveal]');
+  var reveals = [].slice.call(document.querySelectorAll('[data-reveal]'));
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // Headlines reveal word by word: each word is wrapped so it can rise out of its own line
+  // (the CSS does the movement). Screen readers get the whole headline as one label instead
+  // of a string of separate words.
+  if (!reduceMotion) {
+    document.querySelectorAll('.display-xl, .display-lg, .display-md, .manifesto h3').forEach(function (heading) {
+      var words = 0;
+      var wrapWords = function (node) {
+        [].slice.call(node.childNodes).forEach(function (child) {
+          if (child.nodeType === 1) { if (!/^(svg|br)$/i.test(child.tagName)) wrapWords(child); return; }
+          if (child.nodeType !== 3) return;
+          var pieces = document.createDocumentFragment();
+          child.textContent.split(/(\s+)/).forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { pieces.appendChild(document.createTextNode(' ')); return; }
+            var mask = document.createElement('span');
+            var word = document.createElement('span');
+            mask.className = 'w';
+            word.textContent = part;
+            word.style.setProperty('--i', words++);
+            mask.appendChild(word);
+            pieces.appendChild(mask);
+          });
+          node.replaceChild(pieces, child);
+        });
+      };
+      heading.setAttribute('aria-label', heading.textContent.replace(/\s+/g, ' ').trim());
+      wrapWords(heading);
+      [].slice.call(heading.children).forEach(function (child) { child.setAttribute('aria-hidden', 'true'); });
+      heading.classList.add('split');
+      // headlines outside a fading block (the page's main headline, for one) reveal on their own
+      if (!heading.closest('[data-reveal]')) reveals.push(heading);
+    });
+  }
+
   if ('IntersectionObserver' in window && !reduceMotion) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -141,6 +177,82 @@
     reveals.forEach(function (el) { io.observe(el); });
   } else {
     reveals.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+
+  // A thin bar across the top of the screen fills as the page is read
+  if (!reduceMotion) {
+    var progress = document.createElement('div');
+    var progressQueued = false;
+    progress.className = 'scroll-progress';
+    progress.setAttribute('aria-hidden', 'true');
+    body.appendChild(progress);
+    var drawProgress = function () {
+      var room = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.transform = 'scaleX(' + (room > 0 ? Math.min(1, window.scrollY / room) : 0).toFixed(4) + ')';
+      progressQueued = false;
+    };
+    window.addEventListener('scroll', function () {
+      if (!progressQueued) { progressQueued = true; requestAnimationFrame(drawProgress); }
+    }, { passive: true });
+  }
+
+  // Word bands (marquees) roll on their own, and faster or backwards with the scroll.
+  // Each band holds its list twice, so rolling by one list's width loops without a gap.
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    document.querySelectorAll('.marquee__track').forEach(function (track) {
+      var listWidth = 0, onScreen = false;
+      var measureTrack = function () { listWidth = track.scrollWidth / 2; };
+      var roll = function (now) {
+        if (!onScreen || !listWidth) return;
+        var x = (now / 1000 * (listWidth / 38) + window.scrollY * 0.45) % listWidth;
+        track.style.transform = 'translate3d(' + (-x).toFixed(1) + 'px, 0, 0)';
+        requestAnimationFrame(roll);
+      };
+      track.style.animation = 'none';
+      measureTrack();
+      window.addEventListener('resize', measureTrack);
+      new IntersectionObserver(function (entries) {
+        var was = onScreen;
+        onScreen = entries[0].isIntersecting;
+        if (onScreen && !was) { measureTrack(); requestAnimationFrame(roll); }
+      }).observe(track.parentNode);
+    });
+  }
+
+  // With a mouse: hero shapes lean towards the pointer, and buttons pull towards it a little
+  if (!reduceMotion && finePointer) {
+    document.querySelectorAll('.hero, .page-hero').forEach(function (hero) {
+      var shapes = [].slice.call(hero.querySelectorAll('[data-drift]'));
+      if (!shapes.length) return;
+      var aimX = 0, aimY = 0, x = 0, y = 0, leaning = false;
+      var lean = function () {
+        x += (aimX - x) * 0.08;
+        y += (aimY - y) * 0.08;
+        shapes.forEach(function (group) {
+          group.style.setProperty('--mx', x.toFixed(3));
+          group.style.setProperty('--my', y.toFixed(3));
+        });
+        leaning = Math.abs(aimX - x) > 0.002 || Math.abs(aimY - y) > 0.002;
+        if (leaning) requestAnimationFrame(lean);
+      };
+      var aim = function (toX, toY) {
+        aimX = toX; aimY = toY;
+        if (!leaning) { leaning = true; requestAnimationFrame(lean); }
+      };
+      hero.addEventListener('pointermove', function (e) {
+        var box = hero.getBoundingClientRect();
+        aim((e.clientX - box.left) / box.width * 2 - 1, (e.clientY - box.top) / box.height * 2 - 1);
+      });
+      hero.addEventListener('pointerleave', function () { aim(0, 0); });
+    });
+    document.querySelectorAll('main .btn').forEach(function (button) {
+      button.addEventListener('pointermove', function (e) {
+        var box = button.getBoundingClientRect();
+        button.style.translate = ((e.clientX - box.left - box.width / 2) * 0.16).toFixed(1) + 'px ' +
+          ((e.clientY - box.top - box.height / 2) * 0.28).toFixed(1) + 'px';
+      });
+      button.addEventListener('pointerleave', function () { button.style.translate = ''; });
+    });
   }
 
   // Headline numbers count up the first time they scroll into view. The real number is
